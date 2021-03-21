@@ -1,0 +1,142 @@
+$base-color: #8DBFBE;
+$base-shadow: 0 0 9px #b7b4b4;
+$base-text-color: #929699;
+
+
+.auth_login_card {
+  width: 700px;
+  height: 500px;
+  display: flex;
+  border-radius: 4px;
+  box-shadow: $base-shadow;
+  overflow: hidden;
+
+  a {
+    font-size: 12px;
+    color: $base-color;
+    text-decoration: none;
+  }
+
+  form {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 10px 30px;
+
+    h1 {
+      text-align: left;
+      color: $base-text-color;
+    }
+
+    .auth_login_forgot {
+      text-align: end;
+      padding: 8px 0;
+    }
+
+    .auth_login_remember {
+      text-align: left;
+      padding-left: 5px;
+      color: #929699;
+
+      .MuiCheckbox-colorPrimary.Mui-checked {
+        color: $base-color;
+      }
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .MuiTypography-body1 {
+        font-size: 14px;
+      }
+    }
+
+    .auth_login_button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
+
+      button {
+        border: none;
+        border-radius: 30px;
+        background-color: #a1d0cf;
+        color: #fff;
+        padding: 8px 40px;
+        cursor: pointer;
+        transition: all ease .3s;
+
+        &:hover {
+          background-color: $base-color;
+        }
+      }
+    }
+
+    .auth_login_social {
+      width: 60%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 20px auto;
+
+      .auth_login_social_label {
+        font-size: 14px;
+
+        span {
+          display: flex;
+          align-items: center;
+          color: #929699;
+          font-size: 13px;
+
+          &:before, &:after {
+            display: inline-block;
+            content: "";
+            border-top: 1px solid #b1b3b38c;
+            width: 40px;
+            margin-top: 2px;
+          }
+
+          &:before {
+            margin-right: 4px;
+          }
+          &:after {
+            margin-left: 4px;
+          }
+        }
+      }
+
+      .auth_login_social_icons {
+        display: flex;
+        margin-top: 12px;
+
+        img {
+          width: 27px;
+          margin: 0 8px;
+        }
+      }
+    }
+
+    .auth_login_bottom_cont {
+      font-size: 12px;
+      margin-top: 25px;
+      color: $base-text-color;
+
+      a {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  .auth_login_card_img {
+    width: 50%;
+    height: 100%;
+    background-image: url("images/login_img.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+}

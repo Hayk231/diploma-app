@@ -1,0 +1,47 @@
+$base-color: #8DBFBE;
+$base-shadow: 0 0 9px #b7b4b4;
+$base-text-color: #929699;
+
+.auth_reset_card, .auth_security_card, .auth_new_pass_card {
+  width: 450px;
+  border-radius: 4px;
+  box-shadow: $base-shadow;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0 30px;
+
+  h1 {
+    text-align: left;
+    color: #555555;
+    margin-bottom: 0;
+  }
+
+  p {
+    text-align: left;
+    color: $base-text-color;
+    margin-top: 5px;
+    margin-bottom: 35px;
+    font-size: 12px;
+  }
+
+  .auth_reset_button, .auth_security_button, .auth_new_pass_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 0 25px 0;
+
+    button {
+      border: none;
+      border-radius: 30px;
+      background-color: #a1d0cf;
+      color: #fff;
+      padding: 8px 45px;
+      cursor: pointer;
+      transition: all ease .3s;
+
+      &:hover {
+        background-color: $base-color;
+      }
+    }
+  }
+}
