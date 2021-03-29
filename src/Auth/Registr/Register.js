@@ -12,12 +12,14 @@ import {Link, useHistory} from "react-router-dom";
 import {validateForm} from "../../Helpers/Utils";
 import axios from "axios";
 import {baseUrl} from "../../Helpers/Constants";
+import {MenuItem, Select} from "@material-ui/core";
+import CustomSelect from "../../Helpers/components/customSelect";
 
 const defaultState = {
-    name: '',
-    gender: 'male',
-    birthdate: new Date().toISOString().split('T')[0],
-    country: '',
+    fullName: '',
+    gender: 'MALE',
+    birthday: new Date().toISOString().split('T')[0],
+    country: 'Armenia',
     email: '',
     password: '',
     conf_password: '',
@@ -37,14 +39,14 @@ const Register = () => {
             setErrorMessage(validateForm(userState));
         } else {
             setErrorMessage(defaultMessage);
-            let {name, gender, birthdate, country, email, password} = userState;
+            let {fullName, gender, birthday, country, email, password} = userState;
             axios.post(baseUrl + 'users/USER', {
                 email,
                 role: "USER",
                 data: {
-                    name,
+                    fullName,
                     gender,
-                    birthdate,
+                    birthday: new Date(birthday).getTime(),
                     country
                 },
                 password
@@ -57,10 +59,9 @@ const Register = () => {
         let changeData = {...userState};
         let value = event.target.value;
         console.log(value)
-        if (event.target.name === 'birthdate' && new Date(value) > new Date()) {
+        if (event.target.name === 'birthday' && new Date(value) > new Date()) {
             value = new Date().toISOString().split('T')[0]
         }
-        console.log(value)
         changeData[event.target.name] = value;
         setUserState(changeData)
         errorMessage && setErrorMessage(defaultMessage);
@@ -71,18 +72,17 @@ const Register = () => {
             <form onSubmit={submitRegister}>
                 <h1>Create account</h1>
                 <CustomInput type='text' placeholder='Full name' Icon={AccountCircleOutlinedIcon} value={userState.name}
-                             changeFunction={changeFunction} name='name' errorMessage={errorMessage}/>
-                <CustomRadio options={[{value: 'male', 'label': 'Male'}, {value: 'female', 'label': 'Female'}]}
+                             changeFunction={changeFunction} name='fullName' errorMessage={errorMessage}/>
+                <CustomRadio options={[{value: 'MALE', 'label': 'Male'}, {value: 'FEMALE', 'label': 'Female'}]}
                              Icon={WcOutlinedIcon} label='Gender' value={userState.gender}
                              changeFunction={changeFunction} name='gender'/>
                 <label>
                     <CustomInput type='date' placeholder='Birthdate' Icon={CalendarTodayOutlinedIcon}
-                                 value={userState.birthdate} changeFunction={changeFunction} name='birthdate'
+                                 value={userState.birthday} changeFunction={changeFunction} name='birthday'
                                  errorMessage={errorMessage}/>
                 </label>
-                <CustomInput type='text' placeholder='Country' Icon={PublicIcon}
-                             value={userState.country} changeFunction={changeFunction} name='country'
-                             errorMessage={errorMessage}/>
+                <CustomSelect placeholder='Country' Icon={PublicIcon}
+                              value={userState.country} changeFunction={changeFunction} name='country'/>
                 <CustomInput type='text' placeholder='Email' Icon={MailOutlineIcon}
                              value={userState.email} changeFunction={changeFunction} name='email'
                              errorMessage={errorMessage}/>

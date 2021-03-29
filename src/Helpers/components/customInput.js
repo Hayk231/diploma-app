@@ -1,4 +1,5 @@
 import React from 'react';
+import './cunstomInputs.scss';
 
 const CustomInput = ({type, placeholder, Icon, name, changeFunction, errorMessage, value}) => {
 

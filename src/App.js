@@ -1,6 +1,7 @@
 import './App.css';
 import React, {Suspense, lazy} from "react";
 import {Route, Switch, Redirect} from 'react-router-dom';
+import Loading from "./Helpers/components/Loading/Loading";
 
 const Home = lazy(() => import('./Home/Home'));
 const Auth = lazy(() => import('./Auth/Auth'));
@@ -9,7 +10,7 @@ const User = lazy(() => import('./User/User'));
 function App() {
     return (
         <div className="App">
-            <Suspense fallback={<div>Загрузка...</div>}>
+            <Suspense fallback={<Loading/>}>
                 <Switch>
                     <Route exact path='/' component={() => {
                         if (localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token')) {

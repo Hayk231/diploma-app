@@ -1,0 +1,39 @@
+.profile_container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 50px 40vw 50px 90px;
+
+  .profile_header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+
+    h2 {
+      color: #555555;
+      margin-right: 20px;
+    }
+
+    button {
+      background-color: #F39298;
+      border: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      border-radius: 20px;
+      padding: 8px 15px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all ease .3s;
+
+      &:hover {
+        background-color: #fd8088;
+      }
+
+      svg {
+        margin-left: 5px;
+        font-size: 18px;
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import './cunstomInputs.scss';
 
 const CustomRadio = ({options, Icon, label, name, changeFunction}) => {
     return (

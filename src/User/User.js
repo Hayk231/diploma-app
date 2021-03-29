@@ -58,11 +58,11 @@ const User = () => {
                 <Route exact path='/user/notifications' component={Notifications}/>
                 <Route exact path='/user/profile' component={Profile}/>
             </Switch>
-            <button onClick={() => {
-                localStorage.removeItem('auth_token');
-                sessionStorage.removeItem('auth_token');
-                history.push('/')
-            }}>Log out</button>
+            {/*<button onClick={() => {*/}
+            {/*    localStorage.removeItem('auth_token');*/}
+            {/*    sessionStorage.removeItem('auth_token');*/}
+            {/*    history.push('/')*/}
+            {/*}}>Log out</button>*/}
         </div>
     );
 };
