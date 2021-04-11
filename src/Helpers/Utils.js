@@ -4,7 +4,7 @@ export const validateForm = (data) => {
     let invalidName = {name: '', text: ''};
 
     for (let key in data) {
-        if (!data[key].trim()) {
+        if (!data[key].toString().trim()) {
             invalidName = {name: key, text: 'Please fill out this field.'}
             break
         }

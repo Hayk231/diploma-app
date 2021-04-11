@@ -85,6 +85,7 @@ $base-text-color: #929699;
 
       .auth_login_social_label {
         font-size: 14px;
+        text-align: center;
 
         span {
           display: flex;
@@ -124,9 +125,11 @@ $base-text-color: #929699;
       font-size: 12px;
       margin-top: 25px;
       color: $base-text-color;
+      text-align: center;
 
       a {
         margin-left: 5px;
+        font-weight: bold;
       }
     }
   }
@@ -138,5 +141,23 @@ $base-text-color: #929699;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .auth_login_card {
+    width: 95vw;
+
+    form {
+      width: 100%;
+
+      .auth_login_social {
+        width: 70%;
+      }
+    }
+
+    .auth_login_card_img {
+      display: none;
+    }
   }
 }

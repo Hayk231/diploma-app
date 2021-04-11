@@ -2,6 +2,15 @@ $base-color: #8DBFBE;
 $base-text-color: #929699;
 $base-transition: all ease .3s;
 
+
+.custom_label {
+  position: absolute;
+  top: -12px;
+  left: 40px;
+  font-size: 11px;
+  color: #CFCECE;
+}
+
 .custom_input {
   width: 100%;
   margin-top: 25px;
@@ -10,7 +19,7 @@ $base-transition: all ease .3s;
   transition: $base-transition;
   position: relative;
 
-  div {
+  .custom_input_prefix, .custom_input_suffix {
     display: flex;
     justify-content: center;
     padding-bottom: 5px;
@@ -19,6 +28,16 @@ $base-transition: all ease .3s;
     svg {
       color: $base-text-color;
       transition: $base-transition;
+    }
+  }
+  .custom_input_suffix {
+
+    svg {
+      cursor: pointer;
+
+      &:hover {
+        color: #555555;
+      }
     }
   }
 
@@ -40,21 +59,36 @@ $base-transition: all ease .3s;
   &:focus-within {
     border-bottom: 1px solid #555555;
 
-    div svg {
-      color: #555555;
+    .custom_input_prefix, .custom_input_suffix {
+      svg {
+        color: #555555;
+      }
     }
   }
 
-  input[type="date"]::-webkit-inner-spin-button,
-  input[type="date"]::-webkit-calendar-picker-indicator {
-    background: transparent;
-    color: transparent;
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    left: -20px;
-    cursor: pointer;
-    outline: none;
+  input[type="date"] {
+    background-color: #fff;
+    &::-webkit-inner-spin-button,
+    &::-webkit-calendar-picker-indicator {
+      background: transparent;
+      color: transparent;
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      left: -20px;
+      cursor: pointer;
+      outline: none;
+    }
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type=number] {
+    -moz-appearance: textfield;
   }
 }
 
@@ -141,13 +175,13 @@ $base-transition: all ease .3s;
 
 .custom_select {
   width: 100%;
-  margin-top: 15px;
+  margin-top: 25px;
   border-bottom: 1px solid $base-text-color;
   display: flex;
   transition: $base-transition;
   position: relative;
 
-  & > div:first-child {
+  .custom_select_prefix {
     display: flex;
     justify-content: center;
     padding-bottom: 5px;
@@ -178,6 +212,40 @@ $base-transition: all ease .3s;
 
     svg {
       color: #555555;
+    }
+  }
+}
+
+.custom_button {
+  border: none;
+  border-radius: 30px;
+  background-color: #a1d0cf;
+  color: #fff;
+  padding: 10px 30px;
+  cursor: pointer;
+  transition: all ease .3s;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    font-size: 20px;
+    margin-right: 5px;
+  }
+
+  &:hover {
+    background-color: #8eb7b7;
+  }
+
+  &.light {
+    border: 1px solid #a1d0cf;
+    background-color: transparent;
+    color: #a1d0cf;
+
+    &:hover {
+      background-color: #a1d0cf;
+      color: #fff;
     }
   }
 }

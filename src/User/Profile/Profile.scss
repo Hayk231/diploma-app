@@ -1,7 +1,7 @@
 .profile_container {
   width: 100%;
   box-sizing: border-box;
-  padding: 50px 40vw 50px 90px;
+  padding: 50px 45vw 50px 90px;
 
   .profile_header {
     display: flex;
@@ -20,14 +20,14 @@
       display: flex;
       align-items: center;
       border-radius: 20px;
-      padding: 8px 15px;
-      font-size: 13px;
+      padding: 8px 16px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
-      transition: all ease .3s;
+      transition: all ease 0.3s;
 
       &:hover {
-        background-color: #fd8088;
+        background-color: #fe8d94;
       }
 
       svg {
@@ -35,5 +35,55 @@
         font-size: 18px;
       }
     }
+  }
+
+  .profile_user_info {
+
+    .profile_edit {
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        font-size: 14px;
+        background-color: transparent;
+        color: #a1d0cf;
+        padding: 0;
+
+        svg {
+          font-size: 14px;
+          margin-left: 8px;
+        }
+      }
+    }
+  }
+
+  .profile_change_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px 0;
+  }
+
+  .profile_payment_container {
+    width: 100%;
+
+    .profile_payment_header {
+      width: 100%;
+      border-bottom: 1px solid #929699;
+      text-align: left;
+      padding: 8px;
+      color: #555555;
+      font-weight: 600;
+    }
+
+    .profile_payment_list {
+      width: 100%;
+      padding-top: 30px;
+    }
+  }
+
+
+  .custom_select {
+    margin-top: 25px;
   }
 }

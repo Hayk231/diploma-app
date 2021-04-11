@@ -1,13 +1,12 @@
 import React from 'react';
 import {MenuItem, Select} from "@material-ui/core";
-import {countryList} from "../Constants";
 import './cunstomInputs.scss';
 
-const CustomSelect = ({Icon, name, changeFunction, value}) => {
-    console.log(value)
+const CustomSelect = ({Icon, name, changeFunction, value, options, label}) => {
     return (
         <div className='custom_select'>
-            {Icon && <div><Icon/></div>}
+            { label && <div className='custom_label'>{label}</div> }
+            {Icon && <div className='custom_select_prefix'><Icon/></div>}
             <Select
                 value={value}
                 onChange={changeFunction}
@@ -16,9 +15,9 @@ const CustomSelect = ({Icon, name, changeFunction, value}) => {
                 inputProps={{'aria-label': 'Without label', 'name': name}}
             >
                 {
-                    countryList.map(el => {
+                    options.map(el => {
                         return (
-                            <MenuItem value={el} key={el}>{el}</MenuItem>
+                            <MenuItem value={el.id || el} key={el.id || el}>{el.value || el}</MenuItem>
                         )
                     })
                 }

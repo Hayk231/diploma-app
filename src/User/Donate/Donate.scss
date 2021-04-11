@@ -1,0 +1,46 @@
+.donate_container {
+  width: 100%;
+  padding: 60px;
+  display: flex;
+  justify-content: center;
+
+  .donate_content {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+    }
+
+    h1 {
+      color: #8dbfbe;
+    }
+
+    h2 {
+      color: #555555;
+      margin: 30px 0;
+    }
+
+    form {
+      width: 100%;
+
+      .custom_select {
+        margin: 30px 0 60px;
+      }
+
+      button {
+        display: block;
+        margin: 0 auto;
+      }
+    }
+
+    .donate_success_share {
+      color: #555555;
+      margin: 30px 0;
+    }
+  }
+}

@@ -11,7 +11,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {Link, useHistory} from "react-router-dom";
 import {validateForm} from "../../Helpers/Utils";
 import axios from "axios";
-import {baseUrl} from "../../Helpers/Constants";
+import {baseUrl, countryList} from "../../Helpers/Constants";
 import {MenuItem, Select} from "@material-ui/core";
 import CustomSelect from "../../Helpers/components/customSelect";
 
@@ -50,15 +50,15 @@ const Register = () => {
                     country
                 },
                 password
+            }).then(() => {
+                history.push('/auth/confirmation')
             }).catch(err => console.log(err));
-            history.push('/auth/confirmation')
         }
     }
 
     const changeFunction = (event) => {
         let changeData = {...userState};
         let value = event.target.value;
-        console.log(value)
         if (event.target.name === 'birthday' && new Date(value) > new Date()) {
             value = new Date().toISOString().split('T')[0]
         }
@@ -81,7 +81,7 @@ const Register = () => {
                                  value={userState.birthday} changeFunction={changeFunction} name='birthday'
                                  errorMessage={errorMessage}/>
                 </label>
-                <CustomSelect placeholder='Country' Icon={PublicIcon}
+                <CustomSelect placeholder='Country' Icon={PublicIcon} options={countryList}
                               value={userState.country} changeFunction={changeFunction} name='country'/>
                 <CustomInput type='text' placeholder='Email' Icon={MailOutlineIcon}
                              value={userState.email} changeFunction={changeFunction} name='email'

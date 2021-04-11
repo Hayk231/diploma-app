@@ -1,7 +1,7 @@
 import React from 'react';
-import './Goals.scss';
+import './MyGoals.scss';
 
-const Goals = () => {
+const MyGoals = () => {
     return (
         <div>
             Goals
@@ -9,4 +9,4 @@ const Goals = () => {
     );
 };
 
-export default Goals;
+export default MyGoals;
