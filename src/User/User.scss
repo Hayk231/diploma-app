@@ -24,6 +24,10 @@ $base-error-text-color: #ff3a3a;
     color: #fff;
     font-size: 15px;
     font-weight: bold;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 
     .user_header_burger_menu {
       display: none;

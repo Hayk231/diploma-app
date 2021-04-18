@@ -2,7 +2,7 @@ import React from 'react';
 import {MenuItem, Select} from "@material-ui/core";
 import './cunstomInputs.scss';
 
-const CustomSelect = ({Icon, name, changeFunction, value, options, label}) => {
+const CustomSelect = ({Icon, name, changeFunction, value, options, label, disabled}) => {
     return (
         <div className='custom_select'>
             { label && <div className='custom_label'>{label}</div> }
@@ -11,7 +11,7 @@ const CustomSelect = ({Icon, name, changeFunction, value, options, label}) => {
                 value={value}
                 onChange={changeFunction}
                 displayEmpty
-                className='custom_select_comp'
+                className={`custom_select_comp ${disabled ? 'disabled' : ''}`}
                 inputProps={{'aria-label': 'Without label', 'name': name}}
             >
                 {

@@ -14,6 +14,9 @@ import axios from "axios";
 import {baseUrl, countryList} from "../../Helpers/Constants";
 import {MenuItem, Select} from "@material-ui/core";
 import CustomSelect from "../../Helpers/components/customSelect";
+import {useDispatch, useSelector} from "react-redux";
+import {setLoading} from "../../redux/loadingActions";
+import Loading from "../../Helpers/components/Loading/Loading";
 
 const defaultState = {
     fullName: '',
@@ -32,6 +35,8 @@ const Register = () => {
     const [userState, setUserState] = useState(defaultState);
     const [errorMessage, setErrorMessage] = useState(defaultMessage);
     const history = useHistory();
+    const { loading } = useSelector(state => state.loading);
+    const dispatch = useDispatch();
 
     const submitRegister = (event) => {
         event.preventDefault();
@@ -40,6 +45,7 @@ const Register = () => {
         } else {
             setErrorMessage(defaultMessage);
             let {fullName, gender, birthday, country, email, password} = userState;
+            dispatch(setLoading(true));
             axios.post(baseUrl + 'users/USER', {
                 email,
                 role: "USER",
@@ -51,6 +57,7 @@ const Register = () => {
                 },
                 password
             }).then(() => {
+                dispatch(setLoading(false));
                 history.push('/auth/confirmation')
             }).catch(err => console.log(err));
         }
@@ -70,6 +77,7 @@ const Register = () => {
     return (
         <div className='auth_register_card'>
             <form onSubmit={submitRegister}>
+                { loading && <Loading/> }
                 <h1>Create account</h1>
                 <CustomInput type='text' placeholder='Full name' Icon={AccountCircleOutlinedIcon} value={userState.name}
                              changeFunction={changeFunction} name='fullName' errorMessage={errorMessage}/>

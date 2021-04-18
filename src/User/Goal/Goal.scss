@@ -99,3 +99,14 @@
     }
   }
 }
+
+@media only screen and (max-width: 900px) {
+  .goal_expanded {
+    padding: 30px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .goal_expanded {
+    padding: 15px;
+  }
+}

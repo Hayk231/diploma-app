@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './Notifications.scss';
 import CustomButton from "../../Helpers/components/CustomButton";
+import axios from "axios";
+import {baseUrl, getToken} from "../../Helpers/Constants";
 
 const notifications = [
     {
@@ -39,6 +41,14 @@ const notifications = [
 ]
 
 const Notifications = () => {
+
+    useEffect(() => {
+        const AuthStr = 'Bearer '.concat(getToken());
+        axios.get(baseUrl + `notifications`, {
+            headers: {Authorization: AuthStr}
+        }).then(res => console.log(res.data))
+    }, [])
+
     return (
         <div className='notifications_container'>
             {

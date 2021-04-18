@@ -16,10 +16,12 @@ import CustomButton from "../../Helpers/components/CustomButton";
 import ModalContainer from "../../Helpers/components/ModalContainer/ModalContainer";
 import {openEditModal, deleteCreditCard} from "../../redux/User/userActions";
 import {countryList} from "../../Helpers/Constants";
+import Loading from "../../Helpers/components/Loading/Loading";
 
 const Profile = () => {
 
     const {userData, editModal, creditCards} = useSelector(state => state.user);
+    const { loading } = useSelector(state => state.loading);
     const dispatch = useDispatch();
     const history = useHistory()
 
@@ -33,6 +35,7 @@ const Profile = () => {
     return (
         <div className='profile_container'>
             { editModal && <ModalContainer type={editModal}/> }
+            { loading && <Loading/> }
             <div className='profile_header'>
                 <h2>My Profile</h2>
                 <button onClick={() => {
@@ -62,7 +65,7 @@ const Profile = () => {
                                          readOnly={true}/>
                         </label>
                         <CustomSelect Icon={PublicIcon} label='Country' options={countryList}
-                                      value={userData.data.country} name='country' readOnly={true}/>
+                                      value={userData.data.country} name='country' disabled={true}/>
                         <CustomInput type='text' Icon={MailOutlineIcon}
                                      value={userData.email} name='email' label='Email'
                                      readOnly={true}/>

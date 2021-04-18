@@ -1,34 +1,32 @@
 import React, {useEffect, useRef, useState} from 'react';
-import './EditModal.scss';
-import {useDispatch} from "react-redux";
+import './ModalContainer.scss';
+import {useDispatch, useSelector} from "react-redux";
 import {closeEditModal} from "../../../redux/User/userActions";
 import InfoContent from "./InfoContent";
 import PassContent from "./PassContent";
 import CardContent from "./CardContent";
 import ReminderContent from "./ReminderContent";
+import Loading from "../Loading/Loading";
 
-const ModalContainer = ({ type }) => {
+const ModalContainer = ({type}) => {
 
-    const [openClass, setOpenClass] = useState('')
+    const [openClass, setOpenClass] = useState('');
+    const { loading } = useSelector(state => state.loading);
     const dispatch = useDispatch();
     const modalRef = useRef(null);
 
     useEffect(() => {
-        document.addEventListener('click', closeModal);
         setTimeout(() => {
             setOpenClass('open');
         }, 0)
 
         return () => {
-            document.removeEventListener('click', closeModal);
             setOpenClass('');
         }
     }, [])
 
     const closeModal = (e) => {
-        if (e.target.contains(modalRef.current)) {
-            dispatch(closeEditModal())
-        }
+        dispatch(closeEditModal())
     }
 
     const getComponent = (type) => {
@@ -44,9 +42,10 @@ const ModalContainer = ({ type }) => {
     let content = getComponent(type);
 
     return (
-        <div className='modal_container' ref={modalRef}>
-            <div className={`modal_content ${openClass}`}>
-                { content }
+        <div className='modal_container' ref={modalRef} onClick={closeModal}>
+            { loading && <Loading/> }
+            <div className={`modal_content ${openClass}`} onClick={event => event.stopPropagation()}>
+                {content}
             </div>
         </div>
     );

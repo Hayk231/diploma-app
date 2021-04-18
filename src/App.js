@@ -9,7 +9,7 @@ const User = lazy(() => import('./User/User'));
 
 function App() {
     return (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={''}>
             <Switch>
                 <Route exact path='/' component={() => {
                     if (getToken()) {

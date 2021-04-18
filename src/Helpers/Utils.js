@@ -12,6 +12,10 @@ export const validateForm = (data) => {
             invalidName = {name: key, text: 'Password mismatch.'}
             break
         }
+        if (key === 'oldPassword' && data[key] === data.password) {
+            invalidName = {name: key, text: 'Old and new passwords should differ'}
+            break
+        }
         if (key === 'email' && !emailRegex.test(data[key])) {
             debugger
             invalidName = {name: key, text: 'Please enter a valid email address.'}

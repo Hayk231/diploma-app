@@ -3,9 +3,6 @@ $base-shadow: 0 0 9px #b7b4b4;
 $base-text-color: #929699;
 $base-transition: all ease .3s;
 
-$base-error-color: #ff3a3a;
-$base-error-text-color: #ff3a3a;
-
 .auth_container {
   margin: 0;
   padding: 0;
@@ -25,25 +22,6 @@ $base-error-text-color: #ff3a3a;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .invalid_input {
-    border-bottom: 1px solid $base-error-text-color;
-
-    div {
-
-      svg {
-        color: $base-error-color;
-      }
-    }
-
-    .invalid_input_message {
-      position: absolute;
-      bottom: -14px;
-      left: 5px;
-      font-size: 11px;
-      color: #ff3a3a;
-    }
   }
 }
 

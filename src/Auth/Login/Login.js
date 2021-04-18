@@ -11,6 +11,9 @@ import twitterIcon from "./images/twitter.png";
 import {validateForm} from "../../Helpers/Utils";
 import axios from "axios";
 import {baseUrl} from "../../Helpers/Constants";
+import {useDispatch, useSelector} from "react-redux";
+import {setLoading} from "../../redux/loadingActions";
+import Loading from "../../Helpers/components/Loading/Loading";
 
 const defaultLoginData = {
     email: '',
@@ -23,6 +26,8 @@ const Login = () => {
     const [userLoginState, setUserLoginState] = useState(defaultLoginData);
     const [remember, setRemember] = useState(false);
     const [errorMessage, setErrorMessage] = useState(defaultMessage);
+    const { loading } = useSelector(state => state.loading);
+    const dispatch = useDispatch();
     const history = useHistory();
 
     const changeFunction = (event) => {
@@ -39,21 +44,24 @@ const Login = () => {
         } else {
             setErrorMessage(defaultMessage);
             let {email, password} = userLoginState;
+            dispatch(setLoading(true));
             axios.post(baseUrl + 'login', {
                 email,
                 password
             }).then(res => {
+                dispatch(setLoading(false));
                 let storage = remember ? localStorage : sessionStorage;
                 storage.setItem('auth_token', res.data.token)
                 storage.setItem('role', res.data.role);
                 history.push('/')
-            })
+            });
         }
     }
 
     return (
         <div className='auth_login_card'>
             <form onSubmit={submitLogin} autoComplete="on" >
+                { loading && <Loading/> }
                 <h1>Sign in</h1>
                 <CustomInput type='text' placeholder='Email' Icon={MailOutlineIcon} value={userLoginState.name}
                              changeFunction={changeFunction} name='email' errorMessage={errorMessage}/>
@@ -81,16 +89,16 @@ const Login = () => {
                     <button type="submit">Sign in</button>
                     {/*<input type="submit" value='Sign in'/>*/}
                 </div>
-                <div className='auth_login_social'>
-                    <div className='auth_login_social_label'>
-                        <span>or sign in with</span>
-                    </div>
-                    <div className='auth_login_social_icons'>
-                        <img src={googleIcon} alt='googleIcon'/>
-                        <img src={fbIcon} alt='fbIcon'/>
-                        <img src={twitterIcon} alt='twitterIcon'/>
-                    </div>
-                </div>
+                {/*<div className='auth_login_social'>*/}
+                {/*    <div className='auth_login_social_label'>*/}
+                {/*        <span>or sign in with</span>*/}
+                {/*    </div>*/}
+                {/*    <div className='auth_login_social_icons'>*/}
+                {/*        <img src={googleIcon} alt='googleIcon'/>*/}
+                {/*        <img src={fbIcon} alt='fbIcon'/>*/}
+                {/*        <img src={twitterIcon} alt='twitterIcon'/>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
                 <div className='auth_login_bottom_cont'>
                     Don’t have an account?
                     <Link to='/auth/signup'>Sign up</Link>
@@ -99,6 +107,6 @@ const Login = () => {
             <div className='auth_login_card_img'> </div>
         </div>
     );
-};
+}
 
 export default Login;

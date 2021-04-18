@@ -7,6 +7,9 @@ import {useHistory} from "react-router-dom";
 import {validateForm} from "../../Helpers/Utils";
 import axios from "axios";
 import {baseUrl} from "../../Helpers/Constants";
+import {useDispatch, useSelector} from "react-redux";
+import {setLoading} from "../../redux/loadingActions";
+import Loading from "../../Helpers/components/Loading/Loading";
 
 const defaultNewPassData = {
     token: '',
@@ -21,6 +24,8 @@ const NewPassword = () => {
     const [resetNewPassState, setResetNewPassState] = useState(defaultNewPassData);
     const [errorMessage, setErrorMessage] = useState(defaultMessage);
     const history = useHistory();
+    const { loading } = useSelector(state => state.loading);
+    const dispatch = useDispatch();
 
     const changeFunction = (event) => {
         let changeData = {...resetNewPassState};
@@ -36,10 +41,12 @@ const NewPassword = () => {
         } else {
             setErrorMessage(defaultMessage);
             let {token, password} = resetNewPassState;
+            dispatch(setLoading(true));
             axios.put(baseUrl + 'users/USER/reset_tokens', {
                 token,
                 password
             }).then(res => {
+                dispatch(setLoading(false));
                 history.push('/auth/login')
             })
         }
@@ -47,6 +54,7 @@ const NewPassword = () => {
 
     return (
         <form className='auth_new_pass_card' onSubmit={submitResetEmail}>
+            { loading && <Loading/> }
             <h1>New Password</h1>
             <p>Please enter your recovery code from email and your new password</p>
             <CustomInput type='text' placeholder='Code' Icon={VpnKeyIcon}

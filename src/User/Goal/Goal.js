@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './Goal.scss';
 import {useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -10,6 +10,8 @@ import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 import {openEditModal} from "../../redux/User/userActions";
 import ModalContainer from "../../Helpers/components/ModalContainer/ModalContainer";
+import axios from "axios";
+import {baseUrl, getToken} from "../../Helpers/Constants";
 
 const Goal = () => {
 
@@ -19,6 +21,16 @@ const Goal = () => {
     const { editModal } = useSelector(state => state.user);
     const dispatch = useDispatch();
     const history = useHistory();
+
+    useEffect(() => {
+        const AuthStr = 'Bearer '.concat(getToken());
+        axios.get(baseUrl + `goals/${organizationUserId}/${goalId}/data`, {
+            headers: {Authorization: AuthStr}
+        })
+            .then(res => {
+            console.log(res.data)
+        })
+    }, [])
 
     if (!goalData) {
         return <div>loading</div>

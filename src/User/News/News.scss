@@ -1,8 +1,16 @@
 .news_container {
   width: 100%;
+  min-height: calc(100vh - 50px);
   box-sizing: border-box;
   padding: 80px 60px;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  position: relative;
+}
+
+@media only screen and (max-width: 1200px) {
+  .news_container {
+    padding: 80px 30px;
+  }
 }

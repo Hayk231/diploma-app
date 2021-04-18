@@ -2,6 +2,8 @@ $base-color: #8DBFBE;
 $base-text-color: #929699;
 $base-transition: all ease .3s;
 
+$base-error-color: #ff3a3a;
+$base-error-text-color: #ff3a3a;
 
 .custom_label {
   position: absolute;
@@ -205,6 +207,10 @@ $base-transition: all ease .3s;
     &:before, &:after {
       border-bottom: 0!important;
     }
+
+    &.disabled {
+      pointer-events: none;
+    }
   }
 
   &:focus-within {
@@ -247,5 +253,24 @@ $base-transition: all ease .3s;
       background-color: #a1d0cf;
       color: #fff;
     }
+  }
+}
+
+.invalid_input {
+  border-bottom: 1px solid $base-error-text-color;
+
+  div {
+
+    svg {
+      color: $base-error-color;
+    }
+  }
+
+  .invalid_input_message {
+    position: absolute;
+    bottom: -14px;
+    left: 5px;
+    font-size: 11px;
+    color: #ff3a3a;
   }
 }

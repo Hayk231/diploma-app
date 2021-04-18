@@ -9,6 +9,7 @@ $base-text-color: #929699;
   overflow: hidden;
   box-sizing: border-box;
   padding: 0 30px;
+  position: relative;
 
   h1 {
     text-align: left;
@@ -43,5 +44,11 @@ $base-text-color: #929699;
         background-color: $base-color;
       }
     }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .auth_reset_card, .auth_security_card, .auth_new_pass_card {
+    width: 95vw;
   }
 }

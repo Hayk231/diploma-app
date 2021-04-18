@@ -6,7 +6,7 @@ import AdjustIcon from '@material-ui/icons/Adjust';
 import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {useDispatch} from "react-redux";
-import {getAllGoals, getUserData} from "../redux/User/userMiddlewares";
+import {getAllGoals, getUserData, prolongSession} from "../redux/User/userMiddlewares";
 import { Fade, Menu, MenuItem} from "@material-ui/core";
 import BurgerMenu from "../Helpers/components/BurgerMenu/BurgerMenu";
 
@@ -29,8 +29,11 @@ const User = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getUserData())
-        dispatch(getAllGoals())
+        dispatch(getUserData());
+        dispatch(getAllGoals());
+        setInterval(() => {
+            dispatch(prolongSession());
+        }, 1000 * 60 * 90)
     }, []);
 
     const [anchorEl, setAnchorEl] = React.useState(null);

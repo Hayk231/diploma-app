@@ -23,9 +23,6 @@ export const userActions = createSlice({
     reducers: {
         setUser: (state, action) => {
             state.userData = action.payload;
-            if (state.editModal) {
-                closeEditModal()
-            }
         },
         setAllGoals: (state, action) => {
            state.allGoals = action.payload || []

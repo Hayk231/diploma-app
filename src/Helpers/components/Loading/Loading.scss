@@ -1,8 +1,8 @@
 .loader_container {
     width: 100%;
-    height: 100vh;
-    position: fixed;
-    background-color: #5655557d;
+    height: 100%;
+    position: absolute;
+    background-color: #ffffff;
     top: 0;
     left: 0;
     z-index: 1000;
@@ -26,7 +26,7 @@
                 animation: loader_spinner 2.5s cubic-bezier(0.75, 0, 0.5, 1) infinite normal;
                 width: 5em;
                 height: 5em;
-                background-color: #313131;
+                background-color: #8DBFBE;
             }
 
             &:after {
@@ -34,7 +34,7 @@
                 bottom: -.5em;
                 height: .25em;
                 border-radius: 50%;
-                background-color: rgba(#000, 0.2);
+                background-color: rgba(#8DBFBE, 0.2);
             }
         }
     }
@@ -52,6 +52,6 @@
 @keyframes shadow {
     50% {
         transform: scale(0.5);
-        background-color: rgba(#000,0.1);
+        background-color: rgba(#8DBFBE,0.1);
     }
 }
