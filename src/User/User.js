@@ -62,7 +62,7 @@ const User = () => {
     return (
         <div className='user_container'>
             <div className='user_header'>
-                <div>Logo</div>
+                <Link to='/' style={{color: '#fff'}}>Logo</Link>
                 <BurgerMenu defContents={[...navBarContents, {label: 'My profile', path: '/user/profile'}]}/>
                 <div className='user_header_navbar'>
                     {

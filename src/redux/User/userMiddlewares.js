@@ -65,7 +65,10 @@ export const getAllGoals = () => {
         if (token) {
             dispatch(setLoading(true))
             const AuthStr = 'Bearer '.concat(token);
-            axios.get(baseUrl + 'goals', {headers: {Authorization: AuthStr}}).then(res => {
+            axios.get(baseUrl + 'goals', {
+                params: { filter: 'DISCOVER'},
+                headers: {Authorization: AuthStr}
+            }).then(res => {
                 dispatch(setAllGoals(res.data))
                 dispatch(setLoading(false))
             })

@@ -25,7 +25,7 @@ const SingleGoal = ({goal}) => {
                 <div className='news_single_goal_statistics_container'>
                     <div className='news_single_goal_statistics_info'>
                         <div className='goal_col_and_amount'>
-                            <span>$ {goal.statistics.collected}</span>
+                            <span>$ {Math.round(goal.statistics.collected * 100) / 100}</span>
                             <span>$ {goal.amount}</span>
                         </div>
                         <div className='goal_statistics_scale'>
