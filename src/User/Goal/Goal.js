@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Goal.scss';
 import {useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -8,37 +8,72 @@ import CustomButton from "../../Helpers/components/CustomButton";
 import EventIcon from '@material-ui/icons/Event';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
-import {openEditModal} from "../../redux/User/userActions";
+// import {openEditModal} from "../../redux/User/userActions";
 import ModalContainer from "../../Helpers/components/ModalContainer/ModalContainer";
 import axios from "axios";
 import {baseUrl, getToken} from "../../Helpers/Constants";
+import {deleteReminder, setReminder} from "../../redux/User/userMiddlewares";
+// import noImage from "../images/noImage.png";
+import defImage from '../images/default_image.jpg';
 
 const Goal = () => {
-
-    const {allGoals} = useSelector(state => state.user);
-    const {organizationUserId, goalId} = useParams();
-    const goalData = allGoals.find(el => el.organizationUserId == organizationUserId && el.id == goalId);
-    const { editModal } = useSelector(state => state.user);
+    const [reminderActive, setReminderActive] = useState(false);
+    const [goalData, setGoalData] = useState('');
+    const [goalStatData, setGoalStatData] = useState('');
+    // const {allGoals} = useSelector(state => state.user);
+    const {goalId} = useParams();
+    const {editModal} = useSelector(state => state.user);
     const dispatch = useDispatch();
     const history = useHistory();
+    // const goalData = allGoals.find(el => el.organizationUserId == organizationUserId && el.id == goalId);
+    const AuthStr = 'Bearer '.concat(getToken());
 
     useEffect(() => {
-        const AuthStr = 'Bearer '.concat(getToken());
-        axios.get(baseUrl + `goals/${organizationUserId}/${goalId}/data`, {
-            headers: {Authorization: AuthStr}
-        })
-            .then(res => {
-            console.log(res.data)
-        })
-    }, [])
+        getGoalData()
+        // getGoalStatData();
+        getGoalReminderStatus();
+    }, []);
 
-    if (!goalData) {
+    const getGoalData = () => {
+        const AuthStr = 'Bearer '.concat(getToken());
+        axios.get(baseUrl + 'goals', {
+            params: {filter: 'ID', goalId},
+            headers: {Authorization: AuthStr}
+        }).then(res => {
+            setGoalData(res.data[0])
+            getGoalStatData(res.data[0])
+        })
+    }
+
+    const getGoalStatData = ({organizationUserId, id}) => {
+        axios.get(baseUrl + `goals/${organizationUserId}/${id}/data`, {
+            headers: {Authorization: AuthStr}
+        }).then(res => {
+            setGoalStatData(res.data)
+        })
+    }
+
+    const getGoalReminderStatus = () => {
+        axios.get(baseUrl + `reminders/${goalId}`, {
+            headers: {Authorization: AuthStr}
+        }).then(res => {
+            setReminderActive(res.data.exists)
+        })
+    }
+
+    const setReminderHandler = () => {
+        reminderActive ? dispatch(deleteReminder(goalId)) : dispatch(setReminder(goalId));
+        setReminderActive(!reminderActive);
+    }
+
+    if (!goalData.id) {
         return <div>loading</div>
     }
     return (
         <div className='goal_expanded'>
-            { editModal && <ModalContainer type={editModal}/> }
-            <div className='goal_expanded_image' style={{backgroundImage: `url(${goalData.thumbnailImageData.url})`}}>
+            {editModal && <ModalContainer type={editModal}/>}
+            <div className='goal_expanded_image'
+                 style={{backgroundImage: `url(${goalData.thumbnailImageData ? goalData.thumbnailImageData.url : defImage})`}}>
             </div>
             <div className='goal_expanded_content'>
                 <div className='goal_expanded_texts'>
@@ -47,8 +82,8 @@ const Goal = () => {
                 </div>
                 <div className='goal_expanded_statistics_container'>
                     <div className='goal_expanded_col_and_amount'>
-                        <span>$ {goalData.statistics.collected}</span>
-                        <span>$ {goalData.amount}</span>
+                        <span>$ {Math.round(goalData.statistics.collected * 100) / 100}</span>
+                        <span>$ {Math.round(goalData.amount * 100) / 100}</span>
                     </div>
                     <div className='goal_expanded_statistics_scale'>
                         <div style={{width: `${(goalData.statistics.collected / goalData.amount) * 100}%`}}></div>
@@ -67,9 +102,9 @@ const Goal = () => {
                         </CustomButton>
                     </div>
                     <div>
-                        <CustomButton radius='4px' style='light' customWidth='160px' customPadding='10px 20px'
-                                      icon={EventIcon} onClick={() => dispatch(openEditModal('reminder'))}>
-                            Set Reminder
+                        <CustomButton radius='4px' style='light' customWidth='auto' customPadding='10px 20px'
+                                      icon={EventIcon} onClick={setReminderHandler}>
+                            { reminderActive ? 'Remove Reminder' : 'Set Reminder' }
                         </CustomButton>
                         <CustomButton radius='4px' style='light' customWidth='160px'
                                       customPadding='10px 20px' icon={NotificationsActiveIcon}>

@@ -2,6 +2,8 @@ import React from 'react';
 import './SingleGoal.scss';
 import CustomButton from "../CustomButton";
 import {useHistory} from "react-router-dom";
+// import noImage from '../../../User/images/noImage.png';
+import defImage from '../../../User/images/default_image.jpg';
 
 const SingleGoal = ({goal}) => {
 
@@ -11,11 +13,10 @@ const SingleGoal = ({goal}) => {
         e.stopPropagation();
         history.push(`/user/donate/${organizationUserId}-${goalId}`)
     }
-
     return (
-        <div className='news_single_goal' onClick={() => history.push(`/user/goal/${goal.organizationUserId}-${goal.id}`)}>
+        <div className='news_single_goal' onClick={() => history.push(`/user/goal/${goal.id}`)}>
             <div className='news_single_goal_image'
-                 style={{backgroundImage: `url(${goal.thumbnailImageData.url})`}}>
+                 style={{backgroundImage: `url(${goal.thumbnailImageData ? goal.thumbnailImageData.url : defImage})`}}>
             </div>
             <div className='news_single_goal_content'>
                 <div className='news_single_goal_texts'>
@@ -26,10 +27,10 @@ const SingleGoal = ({goal}) => {
                     <div className='news_single_goal_statistics_info'>
                         <div className='goal_col_and_amount'>
                             <span>$ {Math.round(goal.statistics.collected * 100) / 100}</span>
-                            <span>$ {goal.amount}</span>
+                            <span>$ {Math.round(goal.amount * 100) / 100}</span>
                         </div>
                         <div className='goal_statistics_scale'>
-                            <div style={{width: `${(goal.statistics.collected/goal.amount)*100}%`}}> </div>
+                            <div style={{width: `${(goal.statistics.collected / goal.amount) * 100}%`}}></div>
                         </div>
                         <div className='goal_supporters'>
                             {`${goal.statistics.supportersCount} supporter${(goal.statistics.supportersCount > 1) ? 's' : ''}`}

@@ -5,12 +5,12 @@ import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {Link, useHistory} from "react-router-dom";
 import {Checkbox, FormControlLabel} from "@material-ui/core";
-import googleIcon from "./images/google.png";
-import fbIcon from "./images/fb.png";
-import twitterIcon from "./images/twitter.png";
+// import googleIcon from "./images/google.png";
+// import fbIcon from "./images/fb.png";
+// import twitterIcon from "./images/twitter.png";
 import {validateForm} from "../../Helpers/Utils";
 import axios from "axios";
-import {baseUrl} from "../../Helpers/Constants";
+import {baseUrl, getDeviceToken} from "../../Helpers/Constants";
 import {useDispatch, useSelector} from "react-redux";
 import {setLoading} from "../../redux/loadingActions";
 import Loading from "../../Helpers/components/Loading/Loading";
@@ -43,11 +43,13 @@ const Login = () => {
             setErrorMessage(validateForm(userLoginState));
         } else {
             setErrorMessage(defaultMessage);
-            let {email, password} = userLoginState;
+            const {email, password} = userLoginState;
+            const deviceToken = getDeviceToken();
             dispatch(setLoading(true));
             axios.post(baseUrl + 'login', {
                 email,
-                password
+                password,
+                deviceToken
             }).then(res => {
                 dispatch(setLoading(false));
                 let storage = remember ? localStorage : sessionStorage;

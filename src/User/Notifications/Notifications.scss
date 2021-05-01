@@ -2,38 +2,87 @@
   width: 100%;
   padding: 40px 80px;
 
-  .notification_single {
-    width: 100%;
-    padding: 15px;
-    background: #FFFFFF;
+  .notification_single_container {
+    position: relative;
+    overflow: hidden;
+    height: 150px;
     box-shadow: 0 0 5px #828282;
     margin-bottom: 40px;
-    display: flex;
 
-    img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      margin-right: 30px;
-    }
-
-    .notification_single_texts {
-      padding: 5px 30px 0 0;
-
-      h2 {
-        color: #555555;
-        margin: 0 0 5px 0;
-      }
-      div {
-        font-size: 16px;
-        color: #929699;
+    &:hover {
+      .notification_single {
+        left: -50px;
       }
     }
 
-    .notifications_single_button {
-      display: flex;
-      align-items: center;
+    .notification_single {
+      width: 100%;
       padding: 15px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #FFFFFF;
+      display: flex;
+      cursor: pointer;
+      transition: all ease .3s;
+      z-index: 10;
+
+      img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin-right: 30px;
+        object-fit: cover;
+      }
+
+      .notification_single_texts {
+        padding: 5px 30px 0 0;
+
+        h2 {
+          color: #555555;
+          margin: 0 0 10px 0;
+        }
+
+        div {
+          font-size: 16px;
+          color: #929699;
+        }
+      }
+
+      .notifications_single_button {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+      }
+
+      .notification_single_indicator {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        top: 10px;
+        right: 10px;
+        background-color: #ff4e4e;
+        border-radius: 50%;
+      }
+    }
+
+    .notification_single_delete_button {
+      position: absolute;
+      width: 50px;
+      height: 100%;
+      top: 0;
+      right: 0;
+      background-color: #ff4e4e;
+      border: none;
+      color: #fff;
+      font-weight: 900;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all ease .3s;
+
+      &:hover {
+        background-color: #ff3030;
+      }
     }
   }
 }

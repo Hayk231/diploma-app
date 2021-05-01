@@ -55,6 +55,7 @@ $base-error-text-color: #ff3a3a;
         position: relative;
         opacity: .8;
         transition: all ease .3s;
+        position: relative;
 
         &:hover {
           opacity: 1;
@@ -63,6 +64,15 @@ $base-error-text-color: #ff3a3a;
         svg {
           margin-left: 3px;
           font-size: 22px;
+        }
+        .new_notif_indicator {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background-color: red;
         }
       }
 

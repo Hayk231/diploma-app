@@ -1,31 +1,37 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Donate.scss';
-import {useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useHistory, useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import CustomInput from "../../Helpers/components/customInput";
-import CustomSelect from "../../Helpers/components/customSelect";
+// import CustomSelect from "../../Helpers/components/customSelect";
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import CreditCardIcon from "@material-ui/icons/CreditCard";
+// import CreditCardIcon from "@material-ui/icons/CreditCard";
 import CustomButton from "../../Helpers/components/CustomButton";
 import {validateForm} from "../../Helpers/Utils";
 import DonateSuccess from "./DonateSuccess";
+import {donationCreate} from "../../redux/User/userMiddlewares";
+import {setDonationDone} from "../../redux/User/userActions";
+import defImage from "../images/default_image.jpg";
 
 const defaultMessage = {name: '', text: ''};
 
-const defPaymentData = {amount: '', card: ''}
+const defPaymentData = {amount: ''}
 
 const Donate = () => {
 
-    const {allGoals, creditCards} = useSelector(state => state.user);
+    const {allGoals, donationDone, creditCards} = useSelector(state => state.user);
     const {organizationUserId, goalId} = useParams();
+    const dispatch = useDispatch();
     const goalData = allGoals.find(el => el.organizationUserId == organizationUserId && el.id == goalId);
     const [errorMessage, setErrorMessage] = useState(defaultMessage);
     const [paymentData, setPaymentData] = useState(defPaymentData);
-    const [showSuccess, setShowSuccess] = useState(false);
+
+    useEffect(() => {
+        dispatch(setDonationDone(false))
+    },[])
 
     const changeFunction = (event) => {
         event.preventDefault();
-
         let changedData = {...paymentData};
         changedData[event.target.name] = event.target.value;
         setPaymentData(changedData)
@@ -37,7 +43,7 @@ const Donate = () => {
             setErrorMessage(validateForm(paymentData));
         } else {
             setErrorMessage(defaultMessage);
-            setShowSuccess(true)
+            dispatch(donationCreate(goalId, paymentData.amount))
         }
     }
 
@@ -47,18 +53,18 @@ const Donate = () => {
         <div className='donate_container'>
             <div className='donate_content'>
                 {
-                    showSuccess
+                    donationDone
                         ? <DonateSuccess/>
                         : (
                         <>
-                            <img src={goalData.thumbnailImageData.url} alt={goalData.title}/>
+                            <img src={goalData.thumbnailImageData ? goalData.thumbnailImageData.url : defImage} alt={goalData.title}/>
                             <h2>{goalData.title}</h2>
                             <form onSubmit={submitDonation}>
                                 <CustomInput type='number' label='Amount' Icon={AttachMoneyIcon}
                                              value={paymentData.amount} changeFunction={changeFunction}
                                              name='amount' errorMessage={errorMessage}/>
-                                <CustomSelect label='Payment Card' Icon={CreditCardIcon} options={creditCards}
-                                              value={paymentData.card} changeFunction={changeFunction} name='card'/>
+                                {/*<CustomSelect label='Payment Card' Icon={CreditCardIcon} options={creditCards}*/}
+                                {/*              value={paymentData.card} changeFunction={changeFunction} name='card'/>*/}
                                 <CustomButton type='submit' customPadding='10px 35px' radius='4px'>Donate</CustomButton>
                             </form>
                         </>

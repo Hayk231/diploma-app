@@ -13,7 +13,7 @@ const Auth = () => {
     return (
         <div className='auth_container'>
             <div className='auth_header'>
-                Fundraising
+
             </div>
             <div className='auth_main_content'>
                 <Switch>

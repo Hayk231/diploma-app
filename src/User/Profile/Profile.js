@@ -75,23 +75,23 @@ const Profile = () => {
             <div className='profile_change_button'>
                 <CustomButton onClick={() => dispatch(openEditModal('pass'))}>Change Password</CustomButton>
             </div>
-            <div className='profile_payment_container'>
-                <div className='profile_payment_header'>
-                    <div>Payment details</div>
-                </div>
-                <div className='profile_payment_list'>
-                    {
-                        creditCards.map(el => (
-                            <CustomInput type='text' placeholder='Card Number' Icon={CreditCardIcon}
-                                         value={el.value} name='card' readOnly={true}
-                                         key={el.id} suffixData={{icon: DeleteOutlineIcon, clickFunction: () => removeCreditCard(el.id)}}/>
-                        ))
-                    }
-                </div>
-                <div className='profile_change_button'>
-                    <CustomButton onClick={() => dispatch(openEditModal('card'))}>Add credit card</CustomButton>
-                </div>
-            </div>
+            {/*<div className='profile_payment_container'>*/}
+            {/*    <div className='profile_payment_header'>*/}
+            {/*        <div>Payment details</div>*/}
+            {/*    </div>*/}
+            {/*    <div className='profile_payment_list'>*/}
+            {/*        {*/}
+            {/*            creditCards.map(el => (*/}
+            {/*                <CustomInput type='text' placeholder='Card Number' Icon={CreditCardIcon}*/}
+            {/*                             value={el.value} name='card' readOnly={true}*/}
+            {/*                             key={el.id} suffixData={{icon: DeleteOutlineIcon, clickFunction: () => removeCreditCard(el.id)}}/>*/}
+            {/*            ))*/}
+            {/*        }*/}
+            {/*    </div>*/}
+            {/*    <div className='profile_change_button'>*/}
+            {/*        <CustomButton onClick={() => dispatch(openEditModal('card'))}>Add credit card</CustomButton>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
         </div>
     );
 };

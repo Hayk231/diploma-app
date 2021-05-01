@@ -5,8 +5,8 @@ import DraftsOutlinedIcon from '@material-ui/icons/DraftsOutlined';
 import AdjustIcon from '@material-ui/icons/Adjust';
 import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import {useDispatch} from "react-redux";
-import {getAllGoals, getUserData, prolongSession} from "../redux/User/userMiddlewares";
+import {useDispatch, useSelector} from "react-redux";
+import {getGoals, getNotifications, getUserData, prolongSession} from "../redux/User/userMiddlewares";
 import { Fade, Menu, MenuItem} from "@material-ui/core";
 import BurgerMenu from "../Helpers/components/BurgerMenu/BurgerMenu";
 
@@ -19,21 +19,23 @@ const Donate = lazy(() => import("./Donate/Donate"));
 
 const navBarContents = [
     {label: 'News', icon: <DraftsOutlinedIcon/>, path: '/user/news'},
-    {label: 'My Goals', icon: <AdjustIcon/>, path: '/user/goals'},
+    {label: 'My Goals', icon: <AdjustIcon/>, path: '/user/my-goals'},
     {label: 'Notifications', icon: <NotificationsOutlinedIcon/>, path: '/user/notifications'},
 ]
 
 const User = () => {
 
+    const { notifications } = useSelector(state => state.user);
     const history = useHistory();
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getUserData());
-        dispatch(getAllGoals());
+        dispatch(getGoals('DISCOVER'));
+        dispatch(getNotifications());
         setInterval(() => {
             dispatch(prolongSession());
-        }, 1000 * 60 * 90)
+        }, 1000 * 60 * 90);
     }, []);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -59,6 +61,8 @@ const User = () => {
         history.push('/')
     }
 
+    const newNotifCount = notifications.filter(el => el.isNew).length;
+
     return (
         <div className='user_container'>
             <div className='user_header'>
@@ -72,6 +76,10 @@ const User = () => {
                                     'user_header_navbar_item_active' : ''}>
                                     {el.label}
                                     {el.icon}
+                                    {
+                                        el.label === 'Notifications' && newNotifCount > 0 &&
+                                            <div className='new_notif_indicator'> </div>
+                                    }
                                 </Link>
                             )
                         })
@@ -102,7 +110,7 @@ const User = () => {
                 <Route exact path='/user/my-goals' component={Goals}/>
                 <Route exact path='/user/notifications' component={Notifications}/>
                 <Route exact path='/user/profile' component={Profile}/>
-                <Route exact path='/user/goal/:organizationUserId-:goalId' component={Goal}/>
+                <Route exact path='/user/goal/:goalId' component={Goal}/>
                 <Route exact path='/user/donate/:organizationUserId-:goalId' component={Donate}/>
             </Switch>
         </div>

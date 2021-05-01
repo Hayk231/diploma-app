@@ -18,18 +18,25 @@ export const userActions = createSlice({
         userData: initialUserData,
         editModal: '',
         creditCards: initialCreditCards,
-        allGoals: []
+        allGoals: [],
+        myGoals: [],
+        donationDone: false,
+        notifications: []
     },
     reducers: {
         setUser: (state, action) => {
             state.userData = action.payload;
         },
         setAllGoals: (state, action) => {
-           state.allGoals = action.payload || []
-        } ,
+            state.allGoals = action.payload || []
+        },
+        setMyGoals: (state, action) => {
+            state.myGoals = action.payload || []
+        },
         outUser: state => {
             state.userData = initialUserData;
-            localStorage.clear()
+            localStorage.clear();
+            window.location.reload();
         },
         openEditModal: (state, action) => {
             state.editModal = action.payload
@@ -39,10 +46,37 @@ export const userActions = createSlice({
         },
         deleteCreditCard: (state, action) => {
             state.creditCards.splice(action.payload, 1)
+        },
+        setDonationDone: (state, action) => {
+            state.donationDone = action.payload
+        },
+        setNotifications: (state, action) => {
+            state.notifications = action.payload
+        },
+        setNotificationsSeen: (state, action) => {
+            state.notifications = action.payload
+        },
+        addNotification: (state, action) => {
+            state.notifications.push(action.payload)
+        },
+        deleteNotification: (state, action) => {
+            state.notifications = state.notifications.filter(el => el.notificationId != action.payload)
         }
     }
 })
 
-export const {setUser, setAllGoals, outUser, openEditModal, closeEditModal, deleteCreditCard} = userActions.actions
+export const {
+    setUser,
+    setAllGoals,
+    setMyGoals,
+    outUser,
+    openEditModal,
+    closeEditModal,
+    deleteCreditCard,
+    setDonationDone,
+    setNotifications,
+    addNotification,
+    deleteNotification
+} = userActions.actions
 
 export default userActions.reducer
