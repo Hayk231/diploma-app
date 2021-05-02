@@ -44,7 +44,7 @@ const Notifications = () => {
         return (
             <div className='notifications_container'>
                 {
-                    [...defData, ...notifications].map(el => (
+                    [...notifications, ...defData].map(el => (
                         <div key={el.notificationId} className='notification_single_container'>
                             <div className='notification_single' onClick={() => openGoal(el)}>
                                 <img src={el.thumbnailImageData ? el.thumbnailImageData.url : defImage} alt={el.title}/>

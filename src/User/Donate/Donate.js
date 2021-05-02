@@ -12,6 +12,7 @@ import DonateSuccess from "./DonateSuccess";
 import {donationCreate} from "../../redux/User/userMiddlewares";
 import {setDonationDone} from "../../redux/User/userActions";
 import defImage from "../images/default_image.jpg";
+import Loading from "../../Helpers/components/Loading/Loading";
 
 const defaultMessage = {name: '', text: ''};
 
@@ -47,7 +48,7 @@ const Donate = () => {
         }
     }
 
-    if (!goalData) return <div>loading</div>
+    if (!goalData) return <Loading/>
 
     return (
         <div className='donate_container'>

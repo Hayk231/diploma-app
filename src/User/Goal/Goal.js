@@ -15,11 +15,12 @@ import {baseUrl, getToken} from "../../Helpers/Constants";
 import {deleteReminder, setReminder} from "../../redux/User/userMiddlewares";
 // import noImage from "../images/noImage.png";
 import defImage from '../images/default_image.jpg';
+import Loading from "../../Helpers/components/Loading/Loading";
 
 const Goal = () => {
     const [reminderActive, setReminderActive] = useState(false);
     const [goalData, setGoalData] = useState('');
-    const [goalStatData, setGoalStatData] = useState('');
+    const [goalStatData, setGoalStatData] = useState([]);
     // const {allGoals} = useSelector(state => state.user);
     const {goalId} = useParams();
     const {editModal} = useSelector(state => state.user);
@@ -67,7 +68,7 @@ const Goal = () => {
     }
 
     if (!goalData.id) {
-        return <div>loading</div>
+        return <Loading/>
     }
     return (
         <div className='goal_expanded'>
@@ -92,8 +93,8 @@ const Goal = () => {
                         {`${goalData.statistics.supportersCount} supporter${(goalData.statistics.supportersCount > 1) ? 's' : ''}`}
                     </div>
                 </div>
-                <ChartComponent/>
-                <CarouselComponent/>
+                <ChartComponent data={goalStatData.chartData || []}/>
+                <CarouselComponent imagesData={goalStatData.imagesData || []}/>
                 <div className='goal_expanded_buttons'>
                     <div>
                         <CustomButton radius='4px'
