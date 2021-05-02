@@ -23,13 +23,13 @@ function App() {
             console.log('Unable to get permission to notify. ', err);
         });
         messaging.onMessage((payload) => {
-            // navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope').then(registration => {
-            //     const notificationTitle = payload.data.title;
-            //     const notificationOptions = {
-            //         body: payload.data.description,
-            //     };
-            //     registration.showNotification(notificationTitle, notificationOptions);
-            // });
+            navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope').then(registration => {
+                const notificationTitle = payload.data.title;
+                const notificationOptions = {
+                    body: payload.data.description,
+                };
+                registration.showNotification(notificationTitle, notificationOptions);
+            });
             store.dispatch(addNotification(payload.data))
         });
     }, [])
