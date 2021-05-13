@@ -56,7 +56,15 @@ const Login = () => {
                 storage.setItem('auth_token', res.data.token)
                 storage.setItem('role', res.data.role);
                 history.push('/')
-            });
+            }).catch(error => {
+                dispatch(setLoading(false));
+                const errorData = error.response.data;
+                if (errorData.error === 'Unauthorized') {
+                    setErrorMessage({name: 'password', text: 'Wrong credentials'});
+                } else if (errorData.status === 403) {
+                    setErrorMessage({name: 'email', text: 'Email is not confirmed'});
+                }
+            })
         }
     }
 

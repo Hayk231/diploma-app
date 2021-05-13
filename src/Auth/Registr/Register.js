@@ -12,7 +12,6 @@ import {Link, useHistory} from "react-router-dom";
 import {validateForm} from "../../Helpers/Utils";
 import axios from "axios";
 import {baseUrl, countryList} from "../../Helpers/Constants";
-import {MenuItem, Select} from "@material-ui/core";
 import CustomSelect from "../../Helpers/components/customSelect";
 import {useDispatch, useSelector} from "react-redux";
 import {setLoading} from "../../redux/loadingActions";
@@ -59,7 +58,13 @@ const Register = () => {
             }).then(() => {
                 dispatch(setLoading(false));
                 history.push('/auth/confirmation')
-            }).catch(err => console.log(err));
+            }).catch(error => {
+                dispatch(setLoading(false));
+                const message = error.response.data.message;
+                if (message.toLowerCase().includes('email')) {
+                    setErrorMessage({name: 'email', text: message});
+                }
+            });
         }
     }
 

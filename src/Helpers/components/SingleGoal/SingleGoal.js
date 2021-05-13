@@ -9,9 +9,9 @@ const SingleGoal = ({goal}) => {
 
     const history = useHistory();
 
-    const donateForGaol = (e, organizationUserId, goalId) => {
+    const donateForGoal = (e, goalId) => {
         e.stopPropagation();
-        history.push(`/user/donate/${organizationUserId}-${goalId}`)
+        history.push(`/user/donate/${goalId}`)
     }
     return (
         <div className='news_single_goal' onClick={() => history.push(`/user/goal/${goal.id}`)}>
@@ -37,7 +37,7 @@ const SingleGoal = ({goal}) => {
                         </div>
                     </div>
                     <CustomButton radius='4px' customHeight='40px'
-                                  onClick={(e) => donateForGaol(e, goal.organizationUserId, goal.id)}>
+                                  onClick={(e) => donateForGoal(e, goal.id)}>
                         Donate
                     </CustomButton>
                 </div>

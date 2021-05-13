@@ -13,7 +13,6 @@ import ModalContainer from "../../Helpers/components/ModalContainer/ModalContain
 import axios from "axios";
 import {baseUrl, getToken} from "../../Helpers/Constants";
 import {deleteReminder, setReminder} from "../../redux/User/userMiddlewares";
-// import noImage from "../images/noImage.png";
 import defImage from '../images/default_image.jpg';
 import Loading from "../../Helpers/components/Loading/Loading";
 
@@ -21,17 +20,14 @@ const Goal = () => {
     const [reminderActive, setReminderActive] = useState(false);
     const [goalData, setGoalData] = useState('');
     const [goalStatData, setGoalStatData] = useState([]);
-    // const {allGoals} = useSelector(state => state.user);
     const {goalId} = useParams();
     const {editModal} = useSelector(state => state.user);
     const dispatch = useDispatch();
     const history = useHistory();
-    // const goalData = allGoals.find(el => el.organizationUserId == organizationUserId && el.id == goalId);
     const AuthStr = 'Bearer '.concat(getToken());
 
     useEffect(() => {
         getGoalData()
-        // getGoalStatData();
         getGoalReminderStatus();
     }, []);
 
@@ -98,7 +94,7 @@ const Goal = () => {
                 <div className='goal_expanded_buttons'>
                     <div>
                         <CustomButton radius='4px'
-                                      onClick={() => history.push(`/user/donate/${goalData.organizationUserId}-${goalData.id}`)}>
+                                      onClick={() => history.push(`/user/donate/${goalData.id}`)}>
                             Donate Now
                         </CustomButton>
                     </div>

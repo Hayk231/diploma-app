@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './Donate.scss';
 import {useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,23 +13,73 @@ import {donationCreate} from "../../redux/User/userMiddlewares";
 import {setDonationDone} from "../../redux/User/userActions";
 import defImage from "../images/default_image.jpg";
 import Loading from "../../Helpers/components/Loading/Loading";
+import {baseUrl, getToken} from "../../Helpers/Constants";
+import axios from "axios";
+import {setLoading} from "../../redux/loadingActions";
+import MailOutlineIcon from "@material-ui/icons/MailOutline";
 
 const defaultMessage = {name: '', text: ''};
 
-const defPaymentData = {amount: ''}
+const defPaymentData = {email: '', amount: ''}
 
 const Donate = () => {
 
-    const {allGoals, donationDone, creditCards} = useSelector(state => state.user);
-    const {organizationUserId, goalId} = useParams();
+    const [donationDone, setDonationDone] = useState(false);
+    const {loading} = useSelector(state => state.loading);
+    const {goalId} = useParams();
     const dispatch = useDispatch();
-    const goalData = allGoals.find(el => el.organizationUserId == organizationUserId && el.id == goalId);
+    const [goalData, setGoalData] = useState()
     const [errorMessage, setErrorMessage] = useState(defaultMessage);
     const [paymentData, setPaymentData] = useState(defPaymentData);
+    const paypalButtonRef = useRef(null);
 
     useEffect(() => {
-        dispatch(setDonationDone(false))
-    },[])
+        getGoalData();
+    }, []);
+
+    const getGoalData = () => {
+        const AuthStr = 'Bearer '.concat(getToken());
+        axios.get(baseUrl + 'goals', {
+            params: {filter: 'ID', goalId},
+            headers: {Authorization: AuthStr}
+        }).then(res => {
+            setGoalData(res.data[0])
+        })
+    }
+    useEffect(() => {
+        if (goalData && paypalButtonRef.current && !paypalButtonRef.current.hasChildNodes()) {
+            const AuthStr = 'Bearer '.concat(getToken());
+            paypal.Buttons({
+                createOrder: (data, actions) => {
+                    const donateData = submitDonation();
+                    if (donateData) {
+                        return axios.post(baseUrl + 'donations/' + goalId,
+                            {amount: donateData.amount, email: donateData.email},
+                            {headers: {Authorization: AuthStr}}).then(res => res.data.id)
+                    } else {
+                        return actions.reject()
+                    }
+                },
+                onApprove: (data) => {
+                    dispatch(setLoading(true));
+                    console.log(data)
+                    axios.put(baseUrl + `donations/${goalId}/${data.orderID}`, '',
+                        {headers: {Authorization: AuthStr}}).then(() => {
+                        dispatch(setLoading(false))
+                        setDonationDone(true);
+                    })
+                },
+                onCancel: (err) => {
+                    console.log(err)
+                    axios.delete(baseUrl + `donations/${goalId}/${err.orderID}`,
+                        {headers: {Authorization: AuthStr}}).then(res => {
+                        dispatch(setLoading(false))
+                        alert('Something went wrong')
+                    })
+                },
+            }).render(paypalButtonRef.current);
+        }
+    }, [goalData])
 
     const changeFunction = (event) => {
         event.preventDefault();
@@ -38,17 +88,21 @@ const Donate = () => {
         setPaymentData(changedData)
     }
 
-    const submitDonation = (event) => {
-        event.preventDefault();
-        if (validateForm(paymentData).name) {
-            setErrorMessage(validateForm(paymentData));
+    const submitDonation = () => {
+        const checkData = {
+            email: document.getElementById('paypal_email').value,
+            amount: parseInt(document.getElementById('paypal_amount').value),
+        }
+        if (validateForm(checkData).name) {
+            setErrorMessage(validateForm(checkData));
+            return false
         } else {
             setErrorMessage(defaultMessage);
-            dispatch(donationCreate(goalId, paymentData.amount))
+            return checkData
         }
     }
 
-    if (!goalData) return <Loading/>
+    if (!goalData || loading) return <Loading/>
 
     return (
         <div className='donate_container'>
@@ -57,19 +111,24 @@ const Donate = () => {
                     donationDone
                         ? <DonateSuccess/>
                         : (
-                        <>
-                            <img src={goalData.thumbnailImageData ? goalData.thumbnailImageData.url : defImage} alt={goalData.title}/>
-                            <h2>{goalData.title}</h2>
-                            <form onSubmit={submitDonation}>
-                                <CustomInput type='number' label='Amount' Icon={AttachMoneyIcon}
-                                             value={paymentData.amount} changeFunction={changeFunction}
-                                             name='amount' errorMessage={errorMessage}/>
-                                {/*<CustomSelect label='Payment Card' Icon={CreditCardIcon} options={creditCards}*/}
-                                {/*              value={paymentData.card} changeFunction={changeFunction} name='card'/>*/}
-                                <CustomButton type='submit' customPadding='10px 35px' radius='4px'>Donate</CustomButton>
-                            </form>
-                        </>
-                    )
+                            <>
+                                <img src={goalData.thumbnailImageData ? goalData.thumbnailImageData.url : defImage}
+                                     alt={goalData.title}/>
+                                <h2>{goalData.title}</h2>
+                                <form>
+                                    <CustomInput type='text' label='Paypal Email' Icon={MailOutlineIcon}
+                                                 value={paymentData.email} changeFunction={changeFunction} name='email'
+                                                 errorMessage={errorMessage} id='paypal_email'/>
+                                    <CustomInput type='number' label='Amount' Icon={AttachMoneyIcon}
+                                                 value={paymentData.amount} changeFunction={changeFunction}
+                                                 name='amount' errorMessage={errorMessage} id='paypal_amount'/>
+                                    {/*<CustomSelect label='Payment Card' Icon={CreditCardIcon} options={creditCards}*/}
+                                    {/*              value={paymentData.card} changeFunction={changeFunction} name='card'/>*/}
+                                    {/*<CustomButton type='submit' customPadding='10px 35px' radius='4px'>Donate</CustomButton>*/}
+                                </form>
+                                <div ref={paypalButtonRef}></div>
+                            </>
+                        )
                 }
 
             </div>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import qs from 'qs';
-import {baseUrl, getDeviceToken, getToken} from "../../Helpers/Constants";
+import {baseUrl, getDeviceToken, getRole, getToken} from "../../Helpers/Constants";
 import {
     setUser,
     outUser,
@@ -11,18 +11,15 @@ import {
     setNotifications, deleteNotification,
 } from "./userActions";
 import {setLoading} from "../loadingActions";
-import {createBrowserHistory} from "history";
-
-const history = createBrowserHistory();
-
 
 export const getUserData = () => {
     return dispatch => {
         const token = getToken();
+        const role = getRole();
         if (token) {
             const AuthStr = 'Bearer '.concat(token);
             dispatch(setLoading(true))
-            axios.get(baseUrl + 'users/USER', {headers: {Authorization: AuthStr}}).then(res => {
+            axios.get(baseUrl + `users/${role}`, {headers: {Authorization: AuthStr}}).then(res => {
                 dispatch(setUser(res.data));
                 dispatch(setLoading(false))
             }).catch(error => {
@@ -39,10 +36,11 @@ export const getUserData = () => {
 export const updateUserData = (data) => {
     return (dispatch, getState) => {
         const token = getToken();
+        const role = getRole();
         if (token) {
             const AuthStr = 'Bearer '.concat(token);
             dispatch(setLoading(true))
-            axios.put(baseUrl + 'users/USER', {
+            axios.put(baseUrl + `users/${role}`, {
                 data
             }, {headers: {Authorization: AuthStr}}).then(res => {
                 dispatch(setLoading(false))
@@ -65,10 +63,11 @@ export const updateUserData = (data) => {
 export const updateUserPassword = (data) => {
     return (dispatch, getState) => {
         const token = getToken();
+        const role = getRole();
         if (token) {
             dispatch(setLoading(true))
             const AuthStr = 'Bearer '.concat(token);
-            axios.put(baseUrl + 'users/USER/password', data, {headers: {Authorization: AuthStr}})
+            axios.put(baseUrl + `users/${role}/password`, data, {headers: {Authorization: AuthStr}})
                 .then(() => {
                     dispatch(setLoading(false))
                     dispatch(closeEditModal());
@@ -114,10 +113,11 @@ export const getGoals = (filter) => {
 export const prolongSession = () => {
     return dispatch => {
         const token = getToken();
+        const role = getRole();
         if (token) {
             const AuthStr = 'Bearer '.concat(token);
             const deviceToken = getDeviceToken();
-            axios.put(baseUrl + 'users/USER/session', {deviceToken}, {headers: {Authorization: AuthStr}}).then(res => {
+            axios.put(baseUrl + `users/${role}/session`, {deviceToken}, {headers: {Authorization: AuthStr}}).then(res => {
                 let storage = localStorage.getItem('auth_token') ? localStorage : sessionStorage;
                 storage.setItem('auth_token', res.data.token)
                 storage.setItem('role', res.data.role);

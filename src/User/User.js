@@ -111,7 +111,7 @@ const User = () => {
                 <Route exact path='/user/notifications' component={Notifications}/>
                 <Route exact path='/user/profile' component={Profile}/>
                 <Route exact path='/user/goal/:goalId' component={Goal}/>
-                <Route exact path='/user/donate/:organizationUserId-:goalId' component={Donate}/>
+                <Route exact path='/user/donate/:goalId' component={Donate}/>
             </Switch>
         </div>
     );

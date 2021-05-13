@@ -1,7 +1,7 @@
 import React, {Suspense, lazy, useEffect} from "react";
 import {Route, Switch, Redirect} from 'react-router-dom';
 import Loading from "./Helpers/components/Loading/Loading";
-import {getToken} from "./Helpers/Constants";
+import {getRole, getToken} from "./Helpers/Constants";
 import store from "./redux/store";
 import {addNotification} from "./redux/User/userActions";
 import firebase from "./firebase";
@@ -10,6 +10,7 @@ import 'firebase/messaging';
 const Home = lazy(() => import('./Home/Home'));
 const Auth = lazy(() => import('./Auth/Auth'));
 const User = lazy(() => import('./User/User'));
+const Admin = lazy(() => import('./Admin/Admin'));
 
 function App() {
 
@@ -39,7 +40,7 @@ function App() {
             <Switch>
                 <Route exact path='/' component={() => {
                     if (getToken()) {
-                        return <Redirect to='/user'/>
+                        return <Redirect to={`/${getRole().toLowerCase()}`}/>
                     } else {
                         return <Home/>
                     }
@@ -55,6 +56,13 @@ function App() {
                 <Route path='/user' component={() => {
                     if (getToken()) {
                         return <User/>
+                    } else {
+                        return <Redirect to='/auth/login'/>
+                    }
+                }}/>
+                <Route path='/admin' component={() => {
+                    if (getToken()) {
+                        return <Admin/>
                     } else {
                         return <Redirect to='/auth/login'/>
                     }

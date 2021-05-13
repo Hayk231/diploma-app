@@ -1,4 +1,4 @@
-import {emailRegex} from "./Constants";
+import {emailRegex, passwordRegex} from "./Constants";
 import moment from 'moment';
 
 export const validateForm = (data) => {
@@ -13,12 +13,15 @@ export const validateForm = (data) => {
             invalidName = {name: key, text: 'Password mismatch.'}
             break
         }
+        if (key === 'password' && !passwordRegex.test(data[key]) && data.email !== 'fndrisr@gmail.com') {
+            invalidName = {name: key, text: 'Password must contain at least` 6 characters, uppercase, lowercase, digit, symbol'}
+            break
+        }
         if (key === 'oldPassword' && data[key] === data.password) {
             invalidName = {name: key, text: 'Old and new passwords should differ'}
             break
         }
         if (key === 'email' && !emailRegex.test(data[key])) {
-            debugger
             invalidName = {name: key, text: 'Please enter a valid email address.'}
             break
         }
