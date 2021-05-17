@@ -3,6 +3,7 @@ import {createSlice} from '@reduxjs/toolkit'
 const initialAdminData = {
     updateModal: '',
     goals: [],
+    goalsCount: 0,
     donations: [],
     users: []
 }
@@ -12,15 +13,17 @@ export const adminActions = createSlice({
     initialState: {
         updateModal: '',
         goals: [],
+        goalsCount: 0,
         donations: [],
         users: []
 
     },
     reducers: {
         setGoals: (state, action) => {
-            state.goals = action.payload;
+            state.goals = action.payload.goals;
+            state.goalsCount = action.payload.count;
         },
-        outUser: state => {
+        outUser: () => {
             localStorage.removeItem('auth_token');
             localStorage.removeItem('role');
             sessionStorage.removeItem('auth_token');

@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './ListTable.scss';
 import PropTypes from 'prop-types';
-// import clsx from 'clsx';
 import {lighten, makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -17,37 +16,11 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
 import BlockIcon from '@material-ui/icons/Block';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import defImage from "../../../User/images/default_image.jpg";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import {Fade, Menu, MenuItem, Select} from "@material-ui/core";
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {MenuItem, Select} from "@material-ui/core";
 import {useSelector} from "react-redux";
 import Loading from "../Loading/Loading";
 
-// function createData(title, name, calories, fat, carbs, protein) {
-//     return {title, name, calories, fat, carbs, protein};
-// }
-
-// const rows = [
-//     createData('barev','Cupcake', 305, 3.7, 67, 4.3),
-//     createData('barev','Donut', 452, 25.0, 51, 4.9),
-//     createData('barev','Eclair', 262, 16.0, 24, 6.0),
-//     createData('barev','Frozen yoghurt', 159, 6.0, 24, 4.0),
-//     createData('barev','Gingerbread', 356, 16.0, 49, 3.9),
-//     createData('barev','Honeycomb', 408, 3.2, 87, 6.5),
-//     createData('barev','Ice cream sandwich', 237, 9.0, 37, 4.3),
-//     createData('barev','Jelly Bean', 375, 0.0, 94, 0.0),
-//     createData('barev','KitKat', 518, 26.0, 65, 7.0),
-//     createData('barev','Lollipop', 392, 0.2, 98, 0.0),
-//     createData('barev','Marshmallow', 318, 0, 81, 2.0),
-//     createData('barev','Nougat', 360, 19.0, 9, 37.0),
-//     createData('barev','Oreo', 437, 18.0, 63, 4.0),
-// ];
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -57,22 +30,6 @@ function descendingComparator(a, b, orderBy) {
         return 1;
     }
     return 0;
-}
-
-function getComparator(order, orderBy) {
-    return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
 }
 
 function EnhancedTableHead(props) {
@@ -226,29 +183,16 @@ export default function EnhancedTable(
     {
         rows, headCells, hideId,
         selectedAction, tableTitle,
-        filter, setFilter, filters
+        filter, setFilter, filters,
+        averageCount, page, setPage,
+        rowsPerPage, setRowsPerPage,
+        orderBy, setOrderBy,
+        order, setOrder
     }) {
     const classes = useStyles();
-    const [order, setOrder] = React.useState('desc');
-    const [orderBy, setOrderBy] = React.useState('collected');
     const [selected, setSelected] = React.useState([]);
-    const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
     const { loading } = useSelector(state => state.loading);
 
-
-    const handleMenuClick = (event) => {
-        event.stopPropagation();
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleMenuClose = (event) => {
-        event.stopPropagation();
-        setAnchorEl(null);
-    };
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -257,8 +201,7 @@ export default function EnhancedTable(
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const visibleRows = getShownRows();
-            const newSelecteds = visibleRows.map((n) => n.id);
+            const newSelecteds = rows.map((n) => n.id);
             setSelected(newSelecteds);
             return;
         }
@@ -293,20 +236,10 @@ export default function EnhancedTable(
         setPage(0);
     };
 
-    const handleChangeDense = (event) => {
-        setDense(event.target.checked);
-    };
-
     const isSelected = (id) => selected.indexOf(id) !== -1;
 
-    const getShownRows = () => {
-        return stableSort(rows, getComparator(order, orderBy))
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-    }
-
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-    const shownRows = getShownRows();
-    console.log(selected, shownRows)
+
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
@@ -320,11 +253,11 @@ export default function EnhancedTable(
                     filters={filters}
                 />
                 <TableContainer>
-                    { loading && <Loading/>}
+                    {loading && <Loading/>}
                     <Table
                         className={classes.table}
                         aria-labelledby="tableTitle"
-                        size={dense ? 'small' : 'medium'}
+                        size={'medium'}
                         aria-label="enhanced table"
                     >
                         <EnhancedTableHead
@@ -334,11 +267,11 @@ export default function EnhancedTable(
                             orderBy={orderBy}
                             onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
-                            rowCount={shownRows.length}
+                            rowCount={rows.length}
                             headCells={headCells}
                         />
                         <TableBody>
-                            {shownRows.map((row, index) => {
+                            {rows.map((row, index) => {
                                 const isItemSelected = isSelected(row.id);
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -373,7 +306,7 @@ export default function EnhancedTable(
                                 );
                             })}
                             {emptyRows > 0 && (
-                                <TableRow style={{height: (dense ? 33 : 53) * emptyRows}}>
+                                <TableRow style={{height: 53 * emptyRows}}>
                                     <TableCell colSpan={6}/>
                                 </TableRow>
                             )}
@@ -383,17 +316,13 @@ export default function EnhancedTable(
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={rows.length}
+                    count={averageCount}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onChangePage={handleChangePage}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </Paper>
-            {/*<FormControlLabel*/}
-            {/*    control={<Switch checked={dense} onChange={handleChangeDense} />}*/}
-            {/*    label="Dense padding"*/}
-            {/*/>*/}
         </div>
     )
 }

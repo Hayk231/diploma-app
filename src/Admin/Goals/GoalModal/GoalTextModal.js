@@ -40,7 +40,6 @@ const GoalTextModal = ({data}) => {
             setErrorMessage(defaultMessage);
             dispatch(updateGoalData(changeData))
         }
-        console.log(changeData)
     }
 
     return (

@@ -1,15 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import CustomInput from "../customInput";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import CalendarTodayOutlinedIcon from "@material-ui/icons/CalendarTodayOutlined";
 import CreditCardIcon from '@material-ui/icons/CreditCard';
-import CustomSelect from "../customSelect";
-import PublicIcon from "@material-ui/icons/Public";
 import CustomButton from "../CustomButton";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {validateForm} from "../../Utils";
-import {updateUserData} from "../../../redux/User/userMiddlewares";
 
 const defaultMessage = {name: '', text: ''};
 

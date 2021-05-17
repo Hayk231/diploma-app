@@ -1,39 +1,36 @@
 import React, {useEffect, useState} from 'react';
-import './GoalList.scss';
 import {useDispatch, useSelector} from "react-redux";
-import {getGoals, getTableGoals, updateGoalActiveness} from "../../../redux/Admin/adminMiddlewares";
-import Loading from "../../../Helpers/components/Loading/Loading";
-import EnhancedTable from "../../../Helpers/components/ListTable/ListTable";
-import defImage from "../../../User/images/default_image.jpg";
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
-import ModalContainer from "../../../Helpers/components/ModalContainer/ModalContainer";
-import {openEditModal} from "../../../redux/User/userActions";
+import {getTableGoals, updateGoalActiveness} from "../../redux/Admin/adminMiddlewares";
+import Loading from "../../Helpers/components/Loading/Loading";
+import EnhancedTable from "../../Helpers/components/ListTable/ListTable";
+import defImage from "../../User/images/default_image.jpg";
+// import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+// import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import ModalContainer from "../../Helpers/components/ModalContainer/ModalContainer";
+import {openEditModal} from "../../redux/User/userActions";
 import moment from "moment";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {Fade, Menu, MenuItem} from "@material-ui/core";
 
 const GoalList = () => {
 
-    const {goals} = useSelector(state => state.admin);
+    const {goals, goalsCount} = useSelector(state => state.admin);
     const {editModal} = useSelector(state => state.user);
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
     const [filter, setFilter] = useState(1);
-    const [orderBy, setOrderBy] = useState('dateCreated');
-    const [offset, setOffset] = useState(0);
-    const [limit, setLimit] = useState(10);
-    const [ascending, setAscending] = useState(true);
-
+    const [orderBy, setOrderBy] = useState('amount');
+    const [order, setOrder] = useState('asc');
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const open = Boolean(anchorEl);
 
     useEffect(() => {
-        dispatch(getGoals('DISCOVER'))
-    }, []);
-
-    useEffect(() => {
+        const offset = page * rowsPerPage;
+        const limit = page * rowsPerPage + rowsPerPage;
+        const ascending = order === 'asc';
         dispatch(getTableGoals({active: !!filter, orderBy, offset, limit, ascending}))
-    }, [filter, orderBy, offset, limit, ascending])
+    }, [filter, order, orderBy, page, rowsPerPage])
 
     const handleActionOpen = (event) => {
         event.stopPropagation();
@@ -115,7 +112,7 @@ const GoalList = () => {
     const filters = [
         {value: 1, label: 'Active'},
         {value: 0, label: 'Inactive'},
-    ]
+    ];
 
     return (
         <>
@@ -123,10 +120,9 @@ const GoalList = () => {
             <EnhancedTable rows={goalsRow} headCells={headCells} hideId={true}
                            selectedAction={selectedAction} tableTitle='Goals'
                            filter={filter} setFilter={setFilter} filters={filters}
-                           orderBy={orderBy} setOrderBy={setOrderBy}
-                           offset={offset} setOffset={setOffset}
-                           limit={limit} setLimit={setLimit}
-                           ascending={ascending} setAscending={setAscending}
+                           orderBy={orderBy} setOrderBy={setOrderBy} averageCount={goalsCount}
+                           order={order} setOrder={setOrder}
+                           page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage}
             />
         </>
     );

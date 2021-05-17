@@ -1,11 +1,11 @@
 import React, {lazy, useEffect} from 'react';
-import {Redirect, Route, Switch, useHistory} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import {prolongSession} from "../redux/User/userMiddlewares";
 import {useDispatch} from "react-redux";
 import {outUser} from "../redux/Admin/adminActions";
 
 const Overview = lazy(() => import("./Overview/Overview"));
-const GoalList = lazy(() => import("./Goals/GoalList/GoalList"));
+const GoalList = lazy(() => import("./Goals/GoalList"));
 
 const Admin = () => {
 

@@ -1,16 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './Donate.scss';
-import {useHistory, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import CustomInput from "../../Helpers/components/customInput";
 // import CustomSelect from "../../Helpers/components/customSelect";
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 // import CreditCardIcon from "@material-ui/icons/CreditCard";
-import CustomButton from "../../Helpers/components/CustomButton";
 import {validateForm} from "../../Helpers/Utils";
 import DonateSuccess from "./DonateSuccess";
-import {donationCreate} from "../../redux/User/userMiddlewares";
-import {setDonationDone} from "../../redux/User/userActions";
 import defImage from "../images/default_image.jpg";
 import Loading from "../../Helpers/components/Loading/Loading";
 import {baseUrl, getToken} from "../../Helpers/Constants";

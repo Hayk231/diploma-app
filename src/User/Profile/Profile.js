@@ -9,8 +9,6 @@ import CustomSelect from "../../Helpers/components/customSelect";
 import PublicIcon from "@material-ui/icons/Public";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import EditIcon from '@material-ui/icons/Edit';
-import CreditCardIcon from '@material-ui/icons/CreditCard';
-import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import {useDispatch, useSelector} from "react-redux";
 import CustomButton from "../../Helpers/components/CustomButton";
 import ModalContainer from "../../Helpers/components/ModalContainer/ModalContainer";
