@@ -35,7 +35,10 @@ export const userActions = createSlice({
         },
         outUser: state => {
             state.userData = initialUserData;
-            localStorage.clear();
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('role');
+            sessionStorage.removeItem('auth_token');
+            sessionStorage.removeItem('role');
             window.location.reload();
         },
         openEditModal: (state, action) => {

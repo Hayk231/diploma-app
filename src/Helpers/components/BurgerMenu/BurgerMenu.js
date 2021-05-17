@@ -3,11 +3,13 @@ import {Fade, Menu, MenuItem} from "@material-ui/core";
 import {useHistory} from "react-router-dom";
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import {useDispatch} from "react-redux";
+import {outUser} from "../../../redux/User/userActions";
 
 const BurgerMenu = ({defContents}) => {
 
     const history = useHistory();
-
+    const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
@@ -26,9 +28,7 @@ const BurgerMenu = ({defContents}) => {
 
     const handleSignOut = () => {
         handleClose()
-        localStorage.removeItem('auth_token');
-        sessionStorage.removeItem('auth_token');
-        history.push('/')
+        dispatch(outUser())
     }
 
     return (

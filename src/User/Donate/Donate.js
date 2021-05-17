@@ -62,7 +62,6 @@ const Donate = () => {
                 },
                 onApprove: (data) => {
                     dispatch(setLoading(true));
-                    console.log(data)
                     axios.put(baseUrl + `donations/${goalId}/${data.orderID}`, '',
                         {headers: {Authorization: AuthStr}}).then(() => {
                         dispatch(setLoading(false))
@@ -70,7 +69,6 @@ const Donate = () => {
                     })
                 },
                 onCancel: (err) => {
-                    console.log(err)
                     axios.delete(baseUrl + `donations/${goalId}/${err.orderID}`,
                         {headers: {Authorization: AuthStr}}).then(res => {
                         dispatch(setLoading(false))

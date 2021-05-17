@@ -14,7 +14,7 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import {useDispatch, useSelector} from "react-redux";
 import CustomButton from "../../Helpers/components/CustomButton";
 import ModalContainer from "../../Helpers/components/ModalContainer/ModalContainer";
-import {openEditModal, deleteCreditCard} from "../../redux/User/userActions";
+import {openEditModal, deleteCreditCard, outUser} from "../../redux/User/userActions";
 import {countryList} from "../../Helpers/Constants";
 import Loading from "../../Helpers/components/Loading/Loading";
 
@@ -38,11 +38,7 @@ const Profile = () => {
             { loading && <Loading/> }
             <div className='profile_header'>
                 <h2>My Profile</h2>
-                <button onClick={() => {
-                    localStorage.removeItem('auth_token');
-                    sessionStorage.removeItem('auth_token');
-                    history.push('/')
-                }}>
+                <button onClick={() => dispatch(outUser())}>
                     SIGN OUT
                     <ExitToAppIcon/>
                 </button>

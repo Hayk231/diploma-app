@@ -1,0 +1,59 @@
+.row_with_image {
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+  }
+}
+
+.row_actions_menu {
+  div {
+    width: fit-content;
+    border-radius: 50%;
+    padding: 5px 5px 0;
+    transition: all ease .3s;
+
+    &:hover {
+      background-color: #0000001a;
+    }
+
+    svg {
+      cursor: pointer;
+    }
+  }
+}
+
+.row_popover {
+  box-shadow: 0 0 3px 1px #b3b3b3 !important;
+  margin-left: -100px;
+  margin-top: 10px;
+}
+
+.MuiIconButton-colorSecondary:hover {
+  background-color: #8dbfbe2e !important;
+}
+
+.MuiCheckbox-colorSecondary.Mui-checked {
+  color: #8DBFBE !important;
+}
+
+.MuiTableRow-root.Mui-selected, .MuiTableRow-root.Mui-selected:hover {
+  background-color: #8dbfbe2e !important;
+}
+
+.edit_button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #8DBFBE;
+  font-size: 14px;
+
+  &:hover {
+    color: #6a9493;
+  }
+}

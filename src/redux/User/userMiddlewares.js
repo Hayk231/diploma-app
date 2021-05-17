@@ -8,7 +8,8 @@ import {
     setAllGoals,
     setDonationDone,
     setMyGoals,
-    setNotifications, deleteNotification,
+    setNotifications,
+    deleteNotification,
 } from "./userActions";
 import {setLoading} from "../loadingActions";
 

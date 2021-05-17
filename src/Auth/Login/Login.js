@@ -53,7 +53,7 @@ const Login = () => {
             }).then(res => {
                 dispatch(setLoading(false));
                 let storage = remember ? localStorage : sessionStorage;
-                storage.setItem('auth_token', res.data.token)
+                storage.setItem('auth_token', res.data.token);
                 storage.setItem('role', res.data.role);
                 history.push('/')
             }).catch(error => {

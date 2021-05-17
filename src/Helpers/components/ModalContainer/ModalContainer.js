@@ -7,13 +7,16 @@ import PassContent from "./PassContent";
 import CardContent from "./CardContent";
 import ReminderContent from "./ReminderContent";
 import Loading from "../Loading/Loading";
+import GoalTextModal from "../../../Admin/Goals/GoalModal/GoalTextModal";
+import GoalImageModal from "../../../Admin/Goals/GoalModal/GoalImageModal";
 
-const ModalContainer = ({type}) => {
+const ModalContainer = ({type: editData}) => {
 
     const [openClass, setOpenClass] = useState('');
     const { loading } = useSelector(state => state.loading);
     const dispatch = useDispatch();
     const modalRef = useRef(null);
+    const modalContentRef = useRef(null);
 
     useEffect(() => {
         setTimeout(() => {
@@ -25,7 +28,7 @@ const ModalContainer = ({type}) => {
         }
     }, [])
 
-    const closeModal = (e) => {
+    const closeModal = () => {
         dispatch(closeEditModal())
     }
 
@@ -39,12 +42,29 @@ const ModalContainer = ({type}) => {
         return components[type]
     }
 
-    let content = getComponent(type);
+    const getComponentWIthData = (editData) => {
+        const components = {
+            goalTextEdit: <GoalTextModal data={editData.data}/>,
+            goalImageEdit: <GoalImageModal data={editData.data}/>
+        }
+        return components[editData.type]
+    }
+
+    let content = '';
+    if (editData.data) {
+        content = getComponentWIthData(editData);
+        // if (modalContentRef.current) {
+        //     modalContentRef.current.style.width = '80vw'
+        // }
+    } else {
+        content = getComponent(editData);
+    }
 
     return (
         <div className='modal_container' ref={modalRef} onClick={closeModal}>
             { loading && <Loading/> }
-            <div className={`modal_content ${openClass}`} onClick={event => event.stopPropagation()}>
+            <div className={`modal_content ${openClass}`} ref={modalContentRef}
+                 onClick={event => event.stopPropagation()}>
                 {content}
             </div>
         </div>

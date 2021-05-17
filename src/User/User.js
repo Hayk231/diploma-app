@@ -9,6 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getGoals, getNotifications, getUserData, prolongSession} from "../redux/User/userMiddlewares";
 import { Fade, Menu, MenuItem} from "@material-ui/core";
 import BurgerMenu from "../Helpers/components/BurgerMenu/BurgerMenu";
+import {outUser} from "../redux/User/userActions";
 
 const News = lazy(() => import("./News/News"));
 const Goals = lazy(() => import("./MyGoals/MyGoals"));
@@ -56,9 +57,7 @@ const User = () => {
 
     const handleSignOut = () => {
         handleClose()
-        localStorage.removeItem('auth_token');
-        sessionStorage.removeItem('auth_token');
-        history.push('/')
+        dispatch(outUser())
     }
 
     const newNotifCount = notifications.filter(el => el.isNew).length;
