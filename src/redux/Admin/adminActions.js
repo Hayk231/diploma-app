@@ -1,9 +1,9 @@
-import {createSlice} from '@reduxjs/toolkit'
+import {createSlice, current} from '@reduxjs/toolkit'
 
 const initialAdminData = {
     updateModal: '',
     goals: [],
-    goalsCount: 0,
+    averageCount: 0,
     donations: [],
     users: []
 }
@@ -12,8 +12,9 @@ export const adminActions = createSlice({
     name: 'admin',
     initialState: {
         updateModal: '',
+        changeTrigger: false,
         goals: [],
-        goalsCount: 0,
+        averageCount: 0,
         donations: [],
         users: []
 
@@ -21,7 +22,10 @@ export const adminActions = createSlice({
     reducers: {
         setGoals: (state, action) => {
             state.goals = action.payload.goals;
-            state.goalsCount = action.payload.count;
+            state.averageCount = action.payload.count;
+        },
+        triggerChange: state => {
+            state.changeTrigger = !state.changeTrigger
         },
         outUser: () => {
             localStorage.removeItem('auth_token');
@@ -35,6 +39,7 @@ export const adminActions = createSlice({
 
 export const {
     setGoals,
+    triggerChange,
     outUser
 } = adminActions.actions
 

@@ -3,7 +3,7 @@ import qs from 'qs';
 import {baseUrl, getToken} from "../../Helpers/Constants";
 import {
     setGoals,
-    outUser
+    outUser, triggerChange
 } from "./adminActions";
 import {setLoading} from "../loadingActions";
 import {closeEditModal} from "../User/userActions";
@@ -31,20 +31,20 @@ export const getTableGoals = (instructions) => {
     }
 }
 
-export const updateGoalActiveness = (ids) => {
+export const updateGoalActiveness = (ids, active) => {
     return dispatch => {
         const token = getToken();
         if (token) {
             dispatch(setLoading(true))
             const AuthStr = 'Bearer '.concat(token);
             axios.put(baseUrl + 'goals', '',{
-                params: {ids, active: false},
+                params: {ids, active},
                 paramsSerializer: function(params) {
                     return qs.stringify(params, {arrayFormat: 'repeat'})
                 },
                 headers: {Authorization: AuthStr}
-            }).then(res => {
-                    // dispatch(setGoals(res.data))
+            }).then(() => {
+                dispatch(triggerChange());
                 dispatch(setLoading(false))
             }).catch(error => {
                 dispatch(setLoading(false))
@@ -69,7 +69,7 @@ export const updateGoalData = (goalData) => {
                 {
                     headers: {Authorization: AuthStr}
             }).then(res => {
-                    // dispatch(setGoals(res.data))
+                dispatch(triggerChange());
                 dispatch(closeEditModal(false))
                 dispatch(setLoading(false))
             }).catch(error => {

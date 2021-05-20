@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './ListTable.scss';
 import PropTypes from 'prop-types';
 import {lighten, makeStyles} from '@material-ui/core/styles';
@@ -16,21 +16,9 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import BlockIcon from '@material-ui/icons/Block';
 import {MenuItem, Select} from "@material-ui/core";
 import {useSelector} from "react-redux";
 import Loading from "../Loading/Loading";
-
-
-function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
 
 function EnhancedTableHead(props) {
     const {classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headCells} = props;
@@ -127,9 +115,10 @@ const EnhancedTableToolbar = (props) => {
             )}
 
             {numSelected > 0 ? (
-                <Tooltip title="Deactivate">
-                    <IconButton aria-label="deactivate" onClick={() => props.selectedAction(props.selected)}>
-                        <BlockIcon/>
+                <Tooltip title={props.selectedActionContent.title}>
+                    <IconButton aria-label={props.selectedActionContent.title.toLowerCase()}
+                                onClick={() => props.selectedAction(props.selected)}>
+                        {props.selectedActionContent.icon}
                     </IconButton>
                 </Tooltip>
             ) : (
@@ -162,6 +151,7 @@ const useStyles = makeStyles((theme) => ({
     paper: {
         width: '100%',
         marginBottom: theme.spacing(2),
+        position: 'relative'
     },
     table: {
         minWidth: 750,
@@ -181,17 +171,23 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable(
     {
-        rows, headCells, hideId,
+        rows, headCells, hideId, selectedActionContent,
         selectedAction, tableTitle,
-        filter, setFilter, filters,
-        averageCount, page, setPage,
-        rowsPerPage, setRowsPerPage,
-        orderBy, setOrderBy,
-        order, setOrder
+        filter, setFilter, filters, getData
     }) {
     const classes = useStyles();
+    const {averageCount, changeTrigger} = useSelector(state => state.admin);
     const [selected, setSelected] = React.useState([]);
+    const [orderBy, setOrderBy] = useState('amount');
+    const [order, setOrder] = useState('asc');
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const { loading } = useSelector(state => state.loading);
+
+    useEffect(() => {
+        getData(filter, order, orderBy, page, rowsPerPage);
+        setSelected([])
+    }, [filter, order, orderBy, page, rowsPerPage, changeTrigger])
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -239,21 +235,21 @@ export default function EnhancedTable(
     const isSelected = (id) => selected.indexOf(id) !== -1;
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
+                {loading && <Loading/>}
                 <EnhancedTableToolbar
                     numSelected={selected.length}
                     selected={selected}
                     selectedAction={selectedAction}
                     tableTitle={tableTitle}
+                    selectedActionContent={selectedActionContent}
                     filter={filter}
                     setFilter={setFilter}
                     filters={filters}
                 />
                 <TableContainer>
-                    {loading && <Loading/>}
                     <Table
                         className={classes.table}
                         aria-labelledby="tableTitle"
@@ -305,11 +301,11 @@ export default function EnhancedTable(
                                     </TableRow>
                                 );
                             })}
-                            {emptyRows > 0 && (
-                                <TableRow style={{height: 53 * emptyRows}}>
-                                    <TableCell colSpan={6}/>
-                                </TableRow>
-                            )}
+                            {/*{emptyRows > 0 && (*/}
+                            {/*    <TableRow style={{height: 53 * emptyRows}}>*/}
+                            {/*        <TableCell colSpan={6}/>*/}
+                            {/*    </TableRow>*/}
+                            {/*)}*/}
                         </TableBody>
                     </Table>
                 </TableContainer>

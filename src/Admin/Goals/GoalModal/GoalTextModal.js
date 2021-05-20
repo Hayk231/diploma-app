@@ -11,7 +11,6 @@ import {updateGoalData} from "../../../redux/Admin/adminMiddlewares";
 const defaultMessage = {name: '', text: ''};
 
 const GoalTextModal = ({data}) => {
-
     const [goalData, setGoalData] = useState(data);
     const [errorMessage, setErrorMessage] = useState(defaultMessage);
     const dispatch = useDispatch();
@@ -31,7 +30,7 @@ const GoalTextModal = ({data}) => {
             data: {
                 title: goalData.title,
                 description: goalData.description,
-                amount: goalData.amount,
+                amount: parseFloat(goalData.amount),
             }
         }
         if (validateForm(changeData.data).name) {
