@@ -20,7 +20,8 @@ export default class Example extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.from && this.state.to) {
+        if (this.state.from && this.state.to
+            && JSON.stringify(prevState) !== JSON.stringify(this.state)) {
             this.props.setRange(this.state)
         }
     }

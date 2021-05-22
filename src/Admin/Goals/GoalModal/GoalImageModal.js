@@ -55,12 +55,10 @@ const GoalImageModal = ({data}) => {
                  } else {
                      setSecImageData(secImageData.filter(el => el.publicId !== publicId));
                  }
-                setThumbImageData(null)
                 setCustomLoading(false)
             })
     }
 
-    console.log('stat', secImageData)
     return (
         <div className='goal_image_modal'>
             {customLoading && <Loading/>}
@@ -85,7 +83,7 @@ const GoalImageModal = ({data}) => {
                 }
             </div>
             <div className='sec_image_container'>
-                {secImageData.length &&
+                {secImageData.length ?
                     secImageData.filter(image => !image.thumbnail).map(el => (
                         <div className='sec_image_single' key={el.publicId}>
                             <img src={el.url} alt={el.publicId}/>
@@ -93,7 +91,7 @@ const GoalImageModal = ({data}) => {
                                 <DeleteForeverIcon/>
                             </button>
                         </div>
-                    ))
+                    )) : ''
                 }
                 <label className='sec_image_add'>
                     <span>+ Add image</span>

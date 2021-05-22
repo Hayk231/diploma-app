@@ -15,11 +15,13 @@ import {baseUrl, getToken} from "../../Helpers/Constants";
 import {deleteReminder, setReminder} from "../../redux/User/userMiddlewares";
 import defImage from '../images/default_image.jpg';
 import Loading from "../../Helpers/components/Loading/Loading";
+import moment from "moment";
 
 const Goal = () => {
     const [reminderActive, setReminderActive] = useState(false);
     const [goalData, setGoalData] = useState('');
     const [goalStatData, setGoalStatData] = useState([]);
+    const [orgUserId, setOrgUserId] = useState([]);
     const {goalId} = useParams();
     const {editModal} = useSelector(state => state.user);
     const dispatch = useDispatch();
@@ -37,13 +39,23 @@ const Goal = () => {
             params: {filter: 'ID', goalId},
             headers: {Authorization: AuthStr}
         }).then(res => {
-            setGoalData(res.data[0])
-            getGoalStatData(res.data[0])
+            setGoalData(res.data[0]);
+            setOrgUserId(res.data[0].organizationUserId)
+            getGoalStatData({
+                ...res.data[0], range: {
+                    from: new Date((new Date()).setMonth((new Date()).getMonth() - 1)),
+                    to: new Date(),
+                }
+            })
         })
     }
 
-    const getGoalStatData = ({organizationUserId, id}) => {
+    const getGoalStatData = ({organizationUserId = orgUserId, id = goalId, range}) => {
         axios.get(baseUrl + `goals/${organizationUserId}/${id}/data`, {
+            params: {
+                chartMinDate: moment(range.from).valueOf(),
+                chartMaxDate: moment(range.to).valueOf()
+            },
             headers: {Authorization: AuthStr}
         }).then(res => {
             setGoalStatData(res.data)
@@ -89,7 +101,8 @@ const Goal = () => {
                         {`${goalData.statistics.supportersCount} supporter${(goalData.statistics.supportersCount > 1) ? 's' : ''}`}
                     </div>
                 </div>
-                <ChartComponent data={goalStatData.chartData || []} sortBy='count'/>
+                <ChartComponent data={goalStatData.chartData || []} sortBy='count'
+                                submitRange={(range) => getGoalStatData({range})}/>
                 <CarouselComponent imagesData={goalStatData.imagesData || []}/>
                 <div className='goal_expanded_buttons'>
                     <div>
@@ -101,7 +114,7 @@ const Goal = () => {
                     <div>
                         <CustomButton radius='4px' style='light' customWidth='auto' customPadding='10px 20px'
                                       icon={EventIcon} onClick={setReminderHandler}>
-                            { reminderActive ? 'Remove Reminder' : 'Set Reminder' }
+                            {reminderActive ? 'Remove Reminder' : 'Set Reminder'}
                         </CustomButton>
                         <CustomButton radius='4px' style='light' customWidth='160px'
                                       customPadding='10px 20px' icon={NotificationsActiveIcon}>

@@ -30,7 +30,7 @@ const GoalList = () => {
 
     const handleActionOpen = (event, data) => {
         event.stopPropagation();
-        setChangeEl(data)
+        setChangeEl(data);
         setAnchorEl(event.currentTarget);
     };
 
@@ -39,14 +39,14 @@ const GoalList = () => {
         setChangeEl(null)
         setAnchorEl(null);
     };
-    console.log(goals)
+
     const goalsRow = goals.map(el => {
         const imageSrc = el.thumbnailImageData ? el.thumbnailImageData.url : '';
         return {
             'id': el.id,
             'title': (
                 <div className='row_with_image'>
-                    { imageSrc ? <img src={imageSrc} alt={el.title}/> : <div><CropOriginalIcon/></div> }
+                    {imageSrc ? <img src={imageSrc} alt={el.title}/> : <div><CropOriginalIcon/></div>}
                     {el.title}
                 </div>
             ),
@@ -65,11 +65,16 @@ const GoalList = () => {
         }
     });
 
-    const handleTextEdit = (event) => {
+    const handleTextEdit = (event, data = changeEl) => {
         event.stopPropagation();
-        dispatch(openEditModal({type: 'goalTextEdit', data: changeEl}))
+        dispatch(openEditModal({type: 'goalTextEdit', data}))
         handleActionClose();
     }
+
+    const handleGoalAdd = () => {
+        dispatch(openEditModal({type: 'goalAdd', data: {}}))
+    }
+
     const handleImageEdit = (event) => {
         event.stopPropagation();
         dispatch(openEditModal({type: 'goalImageEdit', data: changeEl}))
@@ -95,8 +100,15 @@ const GoalList = () => {
         {value: 0, label: 'Inactive'},
     ];
 
-    const selectedActionContent = filter ? { title: 'Deactivate', icon: <BlockIcon style={{color: '#f56069'}}/> }
-                                         : { title: 'Activate', icon: <CheckCircleIcon style={{color: '#7fdc8b'}}/> }
+    const selectedActionContent = filter ? {title: 'Deactivate', icon: <BlockIcon style={{color: '#f56069'}}/>}
+        : {title: 'Activate', icon: <CheckCircleIcon style={{color: '#7fdc8b'}}/>};
+
+    const extra = (
+        <div style={{width: '80px', marginLeft: '20px', cursor: 'pointer', color: '#8DBFBE'}}
+            onClick={handleGoalAdd}>
+            +Add Goal
+        </div>
+    )
 
     return (
         <>
@@ -116,7 +128,8 @@ const GoalList = () => {
             </Menu>
             <EnhancedTable rows={goalsRow} headCells={headCells} hideId={true}
                            selectedAction={selectedAction} tableTitle='Goals' filter={filter}
-                           setFilter={setFilter} filters={filters} getData={getGoals} selectedActionContent={selectedActionContent}
+                           setFilter={setFilter} filters={filters} getData={getGoals}
+                           selectedActionContent={selectedActionContent} extra={extra}
             />
         </>
     );

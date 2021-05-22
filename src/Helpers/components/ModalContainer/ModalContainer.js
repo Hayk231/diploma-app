@@ -9,6 +9,7 @@ import ReminderContent from "./ReminderContent";
 import Loading from "../Loading/Loading";
 import GoalTextModal from "../../../Admin/Goals/GoalModal/GoalTextModal";
 import GoalImageModal from "../../../Admin/Goals/GoalModal/GoalImageModal";
+import GoalAddModal from "../../../Admin/Goals/GoalModal/GoalAddModal";
 
 const ModalContainer = ({type: editData}) => {
 
@@ -45,6 +46,7 @@ const ModalContainer = ({type: editData}) => {
     const getComponentWIthData = (editData) => {
         const components = {
             goalTextEdit: <GoalTextModal data={editData.data}/>,
+            goalAdd: <GoalAddModal/>,
             goalImageEdit: <GoalImageModal data={editData.data}/>
         }
         return components[editData.type]
@@ -53,9 +55,6 @@ const ModalContainer = ({type: editData}) => {
     let content = '';
     if (editData.data) {
         content = getComponentWIthData(editData);
-        // if (modalContentRef.current) {
-        //     modalContentRef.current.style.width = '80vw'
-        // }
     } else {
         content = getComponent(editData);
     }

@@ -1,6 +1,9 @@
 import React from 'react';
 import './AdminHeader.scss';
 import {Link, useHistory} from "react-router-dom";
+import {outUser} from "../../redux/Admin/adminActions";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {useDispatch} from "react-redux";
 
 const navBarContents = [
     {label: 'Users', path: './users', absPath: '/admin/users'},
@@ -10,6 +13,7 @@ const navBarContents = [
 
 const AdminHeader = () => {
 
+    const dispatch = useDispatch()
     const history = useHistory();
 
     return (
@@ -18,7 +22,6 @@ const AdminHeader = () => {
             <div className='admin_header_navbar'>
                 {
                     navBarContents.map(el => {
-                        console.log(el.path, history.location.pathname)
                         return (
                             <Link to={el.path} key={el.path} className={el.absPath === history.location.pathname ?
                                 'admin_header_navbar_item_active' : ''}>
@@ -27,6 +30,7 @@ const AdminHeader = () => {
                         )
                     })
                 }
+                <ExitToAppIcon onClick={() => dispatch(outUser())}/>
             </div>
         </div>
     );

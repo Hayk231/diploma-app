@@ -122,18 +122,21 @@ const EnhancedTableToolbar = (props) => {
                     </IconButton>
                 </Tooltip>
             ) : (
-                <Select
-                    labelId="demo-simple-select-placeholder-label-label"
-                    id="demo-simple-select-placeholder-label"
-                    value={props.filter}
-                    onChange={event => props.setFilter(event.target.value)}
-                >
-                    {
-                        props.filters.map(el => (
-                            <MenuItem value={el.value} key={el.value}>{el.label}</MenuItem>
-                        ))
-                    }
-                </Select>
+                <div style={{display: 'flex', alignItems: 'center'}}>
+                    <Select
+                        labelId="demo-simple-select-placeholder-label-label"
+                        id="demo-simple-select-placeholder-label"
+                        value={props.filter}
+                        onChange={event => props.setFilter(event.target.value)}
+                    >
+                        {
+                            props.filters.map(el => (
+                                <MenuItem value={el.value} key={el.value}>{el.label}</MenuItem>
+                            ))
+                        }
+                    </Select>
+                    {props.extra}
+                </div>
             )}
         </Toolbar>
     );
@@ -172,8 +175,8 @@ const useStyles = makeStyles((theme) => ({
 export default function EnhancedTable(
     {
         rows, headCells, hideId, selectedActionContent,
-        selectedAction, tableTitle,
-        filter, setFilter, filters, getData
+        selectedAction, tableTitle, filter,
+        setFilter, filters, getData, extra
     }) {
     const classes = useStyles();
     const {averageCount, changeTrigger} = useSelector(state => state.admin);
@@ -182,7 +185,7 @@ export default function EnhancedTable(
     const [order, setOrder] = useState('asc');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const { loading } = useSelector(state => state.loading);
+    const {loading} = useSelector(state => state.loading);
 
     useEffect(() => {
         getData(filter, order, orderBy, page, rowsPerPage);
@@ -248,6 +251,7 @@ export default function EnhancedTable(
                     filter={filter}
                     setFilter={setFilter}
                     filters={filters}
+                    extra={extra}
                 />
                 <TableContainer>
                     <Table

@@ -15,7 +15,7 @@ export const getTableGoals = (instructions) => {
             dispatch(setLoading(true))
             const AuthStr = 'Bearer '.concat(token);
             axios.post(baseUrl + 'goals',
-                instructions,{headers: {Authorization: AuthStr}}
+                instructions, {headers: {Authorization: AuthStr}}
             ).then(res => {
                 dispatch(setGoals(res.data))
                 dispatch(setLoading(false))
@@ -37,9 +37,9 @@ export const updateGoalActiveness = (ids, active) => {
         if (token) {
             dispatch(setLoading(true))
             const AuthStr = 'Bearer '.concat(token);
-            axios.put(baseUrl + 'goals', '',{
+            axios.put(baseUrl + 'goals', '', {
                 params: {ids, active},
-                paramsSerializer: function(params) {
+                paramsSerializer: function (params) {
                     return qs.stringify(params, {arrayFormat: 'repeat'})
                 },
                 headers: {Authorization: AuthStr}
@@ -68,12 +68,36 @@ export const updateGoalData = (goalData) => {
                 goalData.data,
                 {
                     headers: {Authorization: AuthStr}
-            }).then(res => {
+                }).then(res => {
                 dispatch(triggerChange());
                 dispatch(closeEditModal(false))
                 dispatch(setLoading(false))
             }).catch(error => {
                 dispatch(setLoading(false))
+                if (error && error.response && error.response.status === 401) {
+                    dispatch(outUser())
+                }
+            })
+        } else {
+            dispatch(outUser())
+        }
+    }
+}
+
+export const addGoal = (goalData) => {
+    return dispatch => {
+        const token = getToken();
+        if (token) {
+            dispatch(setLoading(true))
+            const AuthStr = 'Bearer '.concat(token);
+            axios.post(baseUrl + `goals/${goalData.organizationUserId}`,
+                goalData.data, {headers: {Authorization: AuthStr}})
+                .then(() => {
+                    dispatch(triggerChange());
+                    dispatch(closeEditModal(false))
+                    dispatch(setLoading(false))
+                }).catch(error => {
+                    dispatch(setLoading(false))
                 if (error && error.response && error.response.status === 401) {
                     dispatch(outUser())
                 }

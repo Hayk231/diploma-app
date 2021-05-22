@@ -16,13 +16,18 @@ const showValues = [
 const ChartComponent = ({data, customColor, submitRange}) => {
 
     const [showBy, setShowBy] = useState('amount');
+    const [allowChange, setAllowChange] = useState(false);
     const [range, setRange] = useState({
         from: new Date((new Date()).setMonth((new Date()).getMonth()-1)),
         to: new Date(),
     });
 
     useEffect(() => {
-        submitRange(range)
+        if (allowChange) {
+            submitRange(range)
+        } else {
+            setAllowChange(true)
+        }
     }, [range])
 
     const colors = customColor ? [customColor] : {scheme: 'nivo'};

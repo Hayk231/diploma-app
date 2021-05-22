@@ -11,34 +11,6 @@ import {setLoading} from "../../redux/loadingActions";
 import {outUser} from "../../redux/Admin/adminActions";
 import {useDispatch} from "react-redux";
 
-const chartData = [
-    {
-        date: "2021-04-12",
-        amount: 23,
-        "count": 123
-    },
-    {
-        date: "2021-04-14",
-        amount: 30,
-        "count": 123
-    },
-    {
-        date: "2021-04-16",
-        amount: 35,
-        "count": 123
-    },
-    {
-        date: "2021-04-20",
-        amount: 40,
-        "count": 123
-    },
-    {
-        date: "2021-05-06",
-        amount: 50,
-        "count": 123
-    },
-]
-
 const Overview = () => {
 
     const [appData, setAppData] = useState({});
@@ -50,23 +22,9 @@ const Overview = () => {
             from: new Date((new Date()).setMonth((new Date()).getMonth()-1)),
             to: new Date(),
         })
-        // const chartMinDate = moment().subtract(1,'months').valueOf();
-        // const chartMaxDate = moment().valueOf();
-        // axios.get(baseUrl + 'data', {
-        //     params: { chartMinDate, chartMaxDate },
-        //     headers: {Authorization: AuthStr}
-        // }).then(res => {
-        //     setAppData(res.data)
-        // }).catch(error => {
-        //     dispatch(setLoading(false))
-        //     if (error && error.response && error.response.status === 401) {
-        //         dispatch(outUser())
-        //     }
-        // })
     }, []);
 
     const submitRange = (range) => {
-        console.log(moment(range.from).valueOf())
         axios.get(baseUrl + 'data', {
             params: {
                 chartMinDate: moment(range.from).valueOf(),

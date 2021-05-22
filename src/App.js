@@ -55,7 +55,6 @@ function App() {
                 }}/>
                 <Route path='/user'
                        render={props => {
-                           console.log(props)
                            return (
                                getToken() ? (<User/>)
                                :
