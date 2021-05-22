@@ -29,7 +29,7 @@ export const validateForm = (data) => {
     return invalidName
 }
 
-export const buildChartData = (data) => {
+export const buildChartData = (data, sortBy, label) => {
     const defData = [
         {
             "id": "chartData",
@@ -44,8 +44,8 @@ export const buildChartData = (data) => {
         }
     ]
     defData[0].data = data.map(el => {
-        const amount = el.amount || 1;
-        return {x: moment(el.date).format('YYYY-MM-DD'), y: amount, count: el.count}
+        const y = el[sortBy] || 1;
+        return {x: moment(el.date).format('YYYY-MM-DD'), y, label}
     })
     return defData
 }

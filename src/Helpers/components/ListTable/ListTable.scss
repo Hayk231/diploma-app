@@ -2,13 +2,22 @@
   display: flex;
   align-items: center;
 
-  img {
+  img, div {
     width: 40px;
     height: 40px;
     min-width: 40px;
     border-radius: 50%;
     margin-right: 10px;
     object-fit: cover;
+  }
+  div {
+    background-color: #8dbfbe33;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      color: #8DBFBE;
+    }
   }
 }
 

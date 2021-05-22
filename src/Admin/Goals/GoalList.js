@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {getTableGoals, updateGoalActiveness} from "../../redux/Admin/adminMiddlewares";
 import EnhancedTable from "../../Helpers/components/ListTable/ListTable";
-import defImage from "../../User/images/default_image.jpg";
+import CropOriginalIcon from '@material-ui/icons/CropOriginal';
 import ModalContainer from "../../Helpers/components/ModalContainer/ModalContainer";
 import {openEditModal} from "../../redux/User/userActions";
 import moment from "moment";
@@ -39,15 +39,14 @@ const GoalList = () => {
         setChangeEl(null)
         setAnchorEl(null);
     };
-
+    console.log(goals)
     const goalsRow = goals.map(el => {
-        const imageSrc = el.thumbnailImageData ? el.thumbnailImageData.url : defImage;
+        const imageSrc = el.thumbnailImageData ? el.thumbnailImageData.url : '';
         return {
             'id': el.id,
             'title': (
                 <div className='row_with_image'>
-                    <img src={imageSrc}
-                         alt={el.title}/>
+                    { imageSrc ? <img src={imageSrc} alt={el.title}/> : <div><CropOriginalIcon/></div> }
                     {el.title}
                 </div>
             ),

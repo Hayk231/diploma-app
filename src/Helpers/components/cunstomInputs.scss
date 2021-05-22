@@ -200,10 +200,6 @@ $base-error-text-color: #ff3a3a;
     text-align: left;
     font-size: 14px;
 
-    .MuiSelect-select:focus {
-      background-color: transparent;
-    }
-
     &:before, &:after {
       border-bottom: 0!important;
     }

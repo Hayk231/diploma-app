@@ -89,7 +89,7 @@ const Goal = () => {
                         {`${goalData.statistics.supportersCount} supporter${(goalData.statistics.supportersCount > 1) ? 's' : ''}`}
                     </div>
                 </div>
-                <ChartComponent data={goalStatData.chartData || []}/>
+                <ChartComponent data={goalStatData.chartData || []} sortBy='count'/>
                 <CarouselComponent imagesData={goalStatData.imagesData || []}/>
                 <div className='goal_expanded_buttons'>
                     <div>

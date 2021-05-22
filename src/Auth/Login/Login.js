@@ -22,14 +22,13 @@ const defaultLoginData = {
 
 const defaultMessage = {name: '', text: ''};
 
-const Login = () => {
+const Login = ({ location }) => {
     const [userLoginState, setUserLoginState] = useState(defaultLoginData);
     const [remember, setRemember] = useState(false);
     const [errorMessage, setErrorMessage] = useState(defaultMessage);
     const { loading } = useSelector(state => state.loading);
     const dispatch = useDispatch();
     const history = useHistory();
-
     const changeFunction = (event) => {
         let changeData = {...userLoginState};
         changeData[event.target.name] = event.target.value;
@@ -55,7 +54,11 @@ const Login = () => {
                 let storage = remember ? localStorage : sessionStorage;
                 storage.setItem('auth_token', res.data.token);
                 storage.setItem('role', res.data.role);
-                history.push('/')
+                if (location.state && location.state.from && res.data.role === location.state.role) {
+                    history.replace(location.state.from);
+                } else {
+                    history.push('/')
+                }
             }).catch(error => {
                 dispatch(setLoading(false));
                 const errorData = error.response.data;

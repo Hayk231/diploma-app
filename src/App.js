@@ -42,7 +42,7 @@ function App() {
                     if (getToken()) {
                         return <Redirect to={`/${getRole().toLowerCase()}`}/>
                     } else {
-                        return <Home/>
+                        return <Redirect to='/auth/login'/>
                     }
                 }}/>
 
@@ -53,13 +53,20 @@ function App() {
                         return <Auth/>
                     }
                 }}/>
-                <Route path='/user' component={() => {
-                    if (getToken()) {
-                        return <User/>
-                    } else {
-                        return <Redirect to='/auth/login'/>
-                    }
-                }}/>
+                <Route path='/user'
+                       render={props => {
+                           console.log(props)
+                           return (
+                               getToken() ? (<User/>)
+                               :
+                               (
+                                   <Redirect to={{
+                                       pathname: '/auth/login',
+                                       state: {from: props.location, role: 'USER'}
+                                   }}
+                                   />
+                               )
+                       )}}/>
                 <Route path='/admin' component={() => {
                     if (getToken()) {
                         return <Admin/>
