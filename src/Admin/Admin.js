@@ -6,7 +6,7 @@ import AdminHeader from "./AdminHeader/AdminHeader";
 
 const Overview = lazy(() => import("./Overview/Overview"));
 const GoalList = lazy(() => import("./Goals/GoalList"));
-
+const UserList = lazy(() => import("./Users/UserList"));
 
 const Admin = () => {
 
@@ -19,7 +19,7 @@ const Admin = () => {
     })
 
     return (
-        <div style={{backgroundColor: '#F7F8FC'}}>
+        <div style={{backgroundColor: '#F7F8FC', minHeight: '100vh'}}>
             <AdminHeader/>
             <Switch>
                 <Route exact path='/admin' component={() => {
@@ -27,6 +27,7 @@ const Admin = () => {
                 }}/>
                 <Route exact path='/admin/overview' component={Overview}/>
                 <Route exact path='/admin/goals' component={GoalList}/>
+                <Route exact path='/admin/users' component={UserList}/>
             </Switch>
         </div>
     );

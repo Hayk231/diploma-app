@@ -14,14 +14,18 @@ export const adminActions = createSlice({
         updateModal: '',
         changeTrigger: false,
         goals: [],
-        averageCount: 0,
+        users: [],
         donations: [],
-        users: []
+        averageCount: 0
 
     },
     reducers: {
         setGoals: (state, action) => {
             state.goals = action.payload.items;
+            state.averageCount = action.payload.count;
+        },
+        setUsers: (state, action) => {
+            state.users = action.payload.items;
             state.averageCount = action.payload.count;
         },
         triggerChange: state => {
@@ -39,6 +43,7 @@ export const adminActions = createSlice({
 
 export const {
     setGoals,
+    setUsers,
     triggerChange,
     outUser
 } = adminActions.actions

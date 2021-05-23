@@ -3,7 +3,7 @@ import qs from 'qs';
 import {baseUrl, getToken} from "../../Helpers/Constants";
 import {
     setGoals,
-    outUser, triggerChange
+    outUser, triggerChange, setUsers
 } from "./adminActions";
 import {setLoading} from "../loadingActions";
 import {closeEditModal} from "../User/userActions";
@@ -39,6 +39,33 @@ export const updateGoalActiveness = (ids, active) => {
             const AuthStr = 'Bearer '.concat(token);
             axios.put(baseUrl + 'goals', '', {
                 params: {ids, active},
+                paramsSerializer: function (params) {
+                    return qs.stringify(params, {arrayFormat: 'repeat'})
+                },
+                headers: {Authorization: AuthStr}
+            }).then(() => {
+                dispatch(triggerChange());
+                dispatch(setLoading(false))
+            }).catch(error => {
+                dispatch(setLoading(false))
+                if (error && error.response && error.response.status === 401) {
+                    dispatch(outUser())
+                }
+            })
+        } else {
+            dispatch(outUser())
+        }
+    }
+}
+
+export const updateUserActiveness = (ids, block, role) => {
+    return dispatch => {
+        const token = getToken();
+        if (token) {
+            dispatch(setLoading(true))
+            const AuthStr = 'Bearer '.concat(token);
+            axios.put(baseUrl + `users/ADMIN/block`, '', {
+                params: {ids, block},
                 paramsSerializer: function (params) {
                     return qs.stringify(params, {arrayFormat: 'repeat'})
                 },
@@ -98,6 +125,29 @@ export const addGoal = (goalData) => {
                     dispatch(setLoading(false))
                 }).catch(error => {
                     dispatch(setLoading(false))
+                if (error && error.response && error.response.status === 401) {
+                    dispatch(outUser())
+                }
+            })
+        } else {
+            dispatch(outUser())
+        }
+    }
+}
+
+export const getTableUsers = (instructions) => {
+    return dispatch => {
+        const token = getToken();
+        if (token) {
+            dispatch(setLoading(true))
+            const AuthStr = 'Bearer '.concat(token);
+            axios.post(baseUrl + 'users',
+                instructions, {headers: {Authorization: AuthStr}}
+            ).then(res => {
+                dispatch(setUsers(res.data))
+                dispatch(setLoading(false))
+            }).catch(error => {
+                dispatch(setLoading(false))
                 if (error && error.response && error.response.status === 401) {
                     dispatch(outUser())
                 }

@@ -128,7 +128,7 @@ const GoalList = () => {
             </Menu>
             <EnhancedTable rows={goalsRow} headCells={headCells} hideId={true}
                            selectedAction={selectedAction} tableTitle='Goals' filter={filter}
-                           setFilter={setFilter} filters={filters} getData={getGoals}
+                           setFilter={setFilter} filters={filters} getData={getGoals} defOrder='amount'
                            selectedActionContent={selectedActionContent} extra={extra}
             />
         </>

@@ -10,6 +10,7 @@ import Loading from "../Loading/Loading";
 import GoalTextModal from "../../../Admin/Goals/GoalModal/GoalTextModal";
 import GoalImageModal from "../../../Admin/Goals/GoalModal/GoalImageModal";
 import GoalAddModal from "../../../Admin/Goals/GoalModal/GoalAddModal";
+import UserAddModal from "../../../Admin/Users/UserModal/UserAddModal";
 
 const ModalContainer = ({type: editData}) => {
 
@@ -47,7 +48,8 @@ const ModalContainer = ({type: editData}) => {
         const components = {
             goalTextEdit: <GoalTextModal data={editData.data}/>,
             goalAdd: <GoalAddModal/>,
-            goalImageEdit: <GoalImageModal data={editData.data}/>
+            goalImageEdit: <GoalImageModal data={editData.data}/>,
+            userAdd: <UserAddModal data={editData.data}/>,
         }
         return components[editData.type]
     }

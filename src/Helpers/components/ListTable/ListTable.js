@@ -40,7 +40,7 @@ function EnhancedTableHead(props) {
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
-                        align={'left'}
+                        align={headCell.align || 'left'}
                         padding={headCell.disablePadding ? 'none' : 'default'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
@@ -175,13 +175,13 @@ const useStyles = makeStyles((theme) => ({
 export default function EnhancedTable(
     {
         rows, headCells, hideId, selectedActionContent,
-        selectedAction, tableTitle, filter,
+        selectedAction, tableTitle, filter, defOrder,
         setFilter, filters, getData, extra
     }) {
     const classes = useStyles();
     const {averageCount, changeTrigger} = useSelector(state => state.admin);
     const [selected, setSelected] = React.useState([]);
-    const [orderBy, setOrderBy] = useState('amount');
+    const [orderBy, setOrderBy] = useState(defOrder);
     const [order, setOrder] = useState('asc');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -237,7 +237,6 @@ export default function EnhancedTable(
 
     const isSelected = (id) => selected.indexOf(id) !== -1;
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
@@ -295,7 +294,7 @@ export default function EnhancedTable(
                                             Object.keys(row).map(key => {
                                                 if (hideId && key !== 'id') {
                                                     return (
-                                                        <TableCell align="left" key={key}>
+                                                        <TableCell align={key === 'actions' ? 'center': 'left'} key={key}>
                                                             {row[key]}
                                                         </TableCell>
                                                     )
@@ -305,11 +304,6 @@ export default function EnhancedTable(
                                     </TableRow>
                                 );
                             })}
-                            {/*{emptyRows > 0 && (*/}
-                            {/*    <TableRow style={{height: 53 * emptyRows}}>*/}
-                            {/*        <TableCell colSpan={6}/>*/}
-                            {/*    </TableRow>*/}
-                            {/*)}*/}
                         </TableBody>
                     </Table>
                 </TableContainer>
