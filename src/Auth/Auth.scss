@@ -13,6 +13,9 @@ $base-transition: all ease .3s;
   .auth_header {
     width: 100%;
     height: 50px;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
     background-color: $base-color;
   }
 

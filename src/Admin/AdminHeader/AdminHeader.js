@@ -4,6 +4,7 @@ import {Link, useHistory} from "react-router-dom";
 import {outUser} from "../../redux/Admin/adminActions";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {useDispatch} from "react-redux";
+import ProjectLogo from "../../Helpers/components/icons/ProjectLogo";
 
 const navBarContents = [
     {label: 'Users', path: './users', absPath: '/admin/users'},
@@ -18,7 +19,9 @@ const AdminHeader = () => {
 
     return (
         <div className='admin_header'>
-            <Link to='/' style={{color: '#fff'}}>Logo</Link>
+            <Link to='/' style={{color: '#fff'}}>
+                <ProjectLogo/>
+            </Link>
             <div className='admin_header_navbar'>
                 {
                     navBarContents.map(el => {

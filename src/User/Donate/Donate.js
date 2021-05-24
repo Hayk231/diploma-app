@@ -75,7 +75,6 @@ const Donate = () => {
             }).render(paypalButtonRef.current);
         }
     }, [goalData])
-    console.log(goalData)
     const changeFunction = (event) => {
         event.preventDefault();
         let changedData = {...paymentData};

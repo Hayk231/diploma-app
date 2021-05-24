@@ -9,6 +9,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
 
     img {
       width: 150px;
@@ -42,6 +43,16 @@
     .donate_success_share_text {
       color: #555555;
       margin: 30px 0;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .donate_container {
+    padding: 60px 30px;
+
+    .donate_content {
+      width: 100%;
     }
   }
 }

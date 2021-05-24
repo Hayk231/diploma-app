@@ -1,6 +1,7 @@
 import React, {lazy} from 'react';
 import './Auth.scss';
 import {Switch, Route, Redirect} from "react-router-dom";
+import ProjectLogo from "../Helpers/components/icons/ProjectLogo";
 
 const Login = lazy(() => import("./Login/Login"));
 const Register = lazy(() => import("./Registr/Register"));
@@ -13,7 +14,7 @@ const Auth = () => {
     return (
         <div className='auth_container'>
             <div className='auth_header'>
-
+                <ProjectLogo/>
             </div>
             <div className='auth_main_content'>
                 <Switch>

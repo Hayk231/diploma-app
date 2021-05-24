@@ -6,7 +6,8 @@ import CarouselComponent from "../../Helpers/components/CarouselComponent/Carous
 import ChartComponent from "../../Helpers/components/ChartComponent/ChartComponent";
 import CustomButton from "../../Helpers/components/CustomButton";
 import EventIcon from '@material-ui/icons/Event';
-import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
+import EventBusyIcon from '@material-ui/icons/EventBusy';
+// import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 // import {openEditModal} from "../../redux/User/userActions";
 import ModalContainer from "../../Helpers/components/ModalContainer/ModalContainer";
@@ -117,13 +118,13 @@ const Goal = () => {
                     </div>
                     <div>
                         <CustomButton radius='4px' style='light' customWidth='auto' customPadding='10px 20px'
-                                      icon={EventIcon} onClick={setReminderHandler}>
+                                      icon={reminderActive ? EventBusyIcon : EventIcon} onClick={setReminderHandler}>
                             {reminderActive ? 'Remove Reminder' : 'Set Reminder'}
                         </CustomButton>
-                        <CustomButton radius='4px' style='light' customWidth='160px'
-                                      customPadding='10px 20px' icon={NotificationsActiveIcon}>
-                            Subscribe
-                        </CustomButton>
+                        {/*<CustomButton radius='4px' style='light' customWidth='160px'*/}
+                        {/*              customPadding='10px 20px' icon={NotificationsActiveIcon}>*/}
+                        {/*    Subscribe*/}
+                        {/*</CustomButton>*/}
                     </div>
                     <div className='goal_expanded_share'>
                         <div>

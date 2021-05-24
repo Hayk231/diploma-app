@@ -68,3 +68,20 @@
     color: #6a9493;
   }
 }
+
+.donation_action_buttons {
+
+  button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+
+    &:first-child {
+      color: #8ccf83;
+    }
+    &:last-child {
+      color: #f46972;
+    }
+  }
+}

@@ -17,6 +17,7 @@
 
     .notification_single {
       width: 100%;
+      height: 100%;
       padding: 15px;
       position: absolute;
       top: 0;
@@ -35,24 +36,29 @@
         object-fit: cover;
       }
 
-      .notification_single_texts {
-        padding: 5px 30px 0 0;
-
-        h2 {
-          color: #555555;
-          margin: 0 0 10px 0;
-        }
-
-        div {
-          font-size: 16px;
-          color: #929699;
-        }
-      }
-
-      .notifications_single_button {
+      .notification_single_right_wrapper {
+        width: 100%;
         display: flex;
-        align-items: center;
-        padding: 15px;
+
+        .notification_single_texts {
+          padding: 5px 30px 0 0;
+
+          h2 {
+            color: #555555;
+            margin: 0 0 10px 0;
+          }
+
+          div {
+            font-size: 16px;
+            color: #929699;
+          }
+        }
+
+        .notifications_single_button {
+          display: flex;
+          align-items: center;
+          padding: 15px;
+        }
       }
 
       .notification_single_indicator {
@@ -82,6 +88,86 @@
 
       &:hover {
         background-color: #ff3030;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .notifications_container {
+    padding: 30px 10px;
+
+    .notification_single_container {
+
+      .notification_single {
+
+        img {
+          width: 100px;
+          height: 100px;
+          margin-right: 20px;
+        }
+
+        .notification_single_right_wrapper {
+          flex-direction: column;
+
+          .notification_single_texts {
+            h2 {
+              font-size: 18px;
+            }
+
+            div {
+              font-size: 14px;
+            }
+          }
+
+          .notifications_single_button {
+            justify-content: flex-end;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .notifications_container {
+    padding: 30px 10px;
+
+    .notification_single_container {
+
+      .notification_single {
+        padding: 10px;
+
+        img {
+          width: 70px;
+          height: 70px;
+          margin-right: 10px;
+        }
+
+        .notification_single_right_wrapper {
+          flex-direction: column;
+
+          .notification_single_texts {
+            h2 {
+              font-size: 16px;
+            }
+
+            div {
+              font-size: 12px;
+            }
+          }
+
+          .notifications_single_button {
+            padding: 10px 10px 0;
+
+            button {
+              width: 105px!important;
+              height: 30px!important;
+              padding: 5px 15px!important;
+              font-size: 12px!important;
+            }
+          }
+        }
       }
     }
   }

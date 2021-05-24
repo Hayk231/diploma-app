@@ -4,11 +4,14 @@ import {getTableDonations} from "../../redux/Admin/adminMiddlewares";
 import moment from "moment";
 import EnhancedTable from "../../Helpers/components/ListTable/ListTable";
 import {MenuItem, Select} from "@material-ui/core";
-import {triggerChange} from "../../redux/Admin/adminActions";
+import {outUser, triggerChange} from "../../redux/Admin/adminActions";
+import {setLoading} from "../../redux/loadingActions";
+import axios from "axios";
+import {baseUrl, getToken} from "../../Helpers/Constants";
 
 const DonationList = () => {
 
-    const { donations } = useSelector(state => state.admin);
+    const {donations} = useSelector(state => state.admin);
     const [filter, setFilter] = useState('CONFIRMED');
     const [type, setType] = useState('ONE_TIME');
     const [allowRerender, setAllowRerender] = useState(false)
@@ -36,6 +39,40 @@ const DonationList = () => {
         }))
     }
 
+    const confirmDonation = (goalId, donationId) => {
+        const token = getToken();
+        if (token) {
+            const AuthStr = 'Bearer '.concat(token);
+            axios.put(baseUrl + `donations/${goalId}/${donationId}`, '',
+                {headers: {Authorization: AuthStr}}).then(() => {
+                dispatch(triggerChange())
+            }).catch(error => {
+                if (error && error.response && error.response.status === 401) {
+                    dispatch(outUser())
+                }
+            })
+        } else {
+            dispatch(outUser())
+        }
+    };
+
+    const cancelDonation = (goalId, donationId) => {
+        const token = getToken();
+        if (token) {
+            const AuthStr = 'Bearer '.concat(token);
+            axios.delete(baseUrl + `donations/${goalId}/${donationId}`,
+                {headers: {Authorization: AuthStr}}).then(() => {
+                dispatch(triggerChange())
+            }).catch(error => {
+                if (error && error.response && error.response.status === 401) {
+                    dispatch(outUser())
+                }
+            })
+        } else {
+            dispatch(outUser())
+        }
+    };
+
     const donationRow = donations.map(el => {
         const row = {
             'id': el.id,
@@ -46,9 +83,9 @@ const DonationList = () => {
         };
         if (el.donationStatus === 'CREATED') {
             row.actions = (
-                <div>
-                    <button>Confirm</button>
-                    <button>Cancel</button>
+                <div className='donation_action_buttons'>
+                    <button onClick={() => confirmDonation(el.goalId, el.id)}>Confirm</button>
+                    <button onClick={() => cancelDonation(el.goalId, el.id)}>Cancel</button>
                 </div>
             )
         }
@@ -64,7 +101,8 @@ const DonationList = () => {
 
     if (filter === 'CREATED') {
         headCells = [...headCells, {
-            id: 'actions', numeric: false, disablePadding: false, label: 'Actions', disableSorting: true
+            id: 'actions', numeric: false, disablePadding: false,
+            label: 'Actions', disableSorting: true, align: 'center'
         }]
     }
 
@@ -72,12 +110,6 @@ const DonationList = () => {
         {value: 'CONFIRMED', label: 'Confirmed'},
         {value: 'CREATED', label: 'Created'},
     ];
-
-    const extra = (
-        <div style={{width: '120px', marginLeft: '20px', cursor: 'pointer', color: '#8DBFBE'}}>
-            Create Donation
-        </div>
-    );
 
     const types = [
         {value: 'ONE_TIME', label: 'One Time'},
@@ -104,7 +136,7 @@ const DonationList = () => {
             <EnhancedTable rows={donationRow} headCells={headCells} hideId={true}
                            tableTitle={typeComponent()} filter={filter} setFilter={setFilter}
                            filters={filters} getData={getDonations} defOrder='amount'
-                           extra={extra} disableSelect={true}/>
+                           extra='' disableSelect={true}/>
         </div>
     );
 };

@@ -94,6 +94,7 @@
 
 @media only screen and (max-width: 900px) {
   .news_single_goal {
+    width: 100%;
     .news_single_goal_content {
       .news_single_goal_statistics_container {
         flex-direction: column;
@@ -103,11 +104,5 @@
         }
       }
     }
-  }
-}
-
-@media only screen and (max-width: 900px) {
-  .news_single_goal {
-    width: 100%;
   }
 }

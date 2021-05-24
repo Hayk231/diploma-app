@@ -10,6 +10,7 @@ import {getGoals, getNotifications, getUserData, prolongSession} from "../redux/
 import { Fade, Menu, MenuItem} from "@material-ui/core";
 import BurgerMenu from "../Helpers/components/BurgerMenu/BurgerMenu";
 import {outUser} from "../redux/User/userActions";
+import ProjectLogo from "../Helpers/components/icons/ProjectLogo";
 
 const News = lazy(() => import("./News/News"));
 const Goals = lazy(() => import("./MyGoals/MyGoals"));
@@ -65,7 +66,9 @@ const User = () => {
     return (
         <div className='user_container'>
             <div className='user_header'>
-                <Link to='/' style={{color: '#fff'}}>Logo</Link>
+                <Link to='/' style={{color: '#fff'}}>
+                    <ProjectLogo/>
+                </Link>
                 <BurgerMenu defContents={[...navBarContents, {label: 'My profile', path: '/user/profile'}]}/>
                 <div className='user_header_navbar'>
                     {

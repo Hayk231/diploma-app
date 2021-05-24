@@ -123,12 +123,10 @@
     padding: 15px;
     .goal_expanded_content {
       .goal_expanded_buttons {
-        > div:last-child {
-          flex-wrap: wrap;
+        > div:nth-child(2) {
 
           button {
-            width: auto!important;
-            margin: 0 15px 30px;
+            margin: 0 5px;
           }
         }
       }
