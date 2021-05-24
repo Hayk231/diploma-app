@@ -3,7 +3,7 @@ import qs from 'qs';
 import {baseUrl, getToken} from "../../Helpers/Constants";
 import {
     setGoals,
-    outUser, triggerChange, setUsers
+    outUser, triggerChange, setUsers, setDonations
 } from "./adminActions";
 import {setLoading} from "../loadingActions";
 import {closeEditModal} from "../User/userActions";
@@ -145,6 +145,28 @@ export const getTableUsers = (instructions) => {
                 instructions, {headers: {Authorization: AuthStr}}
             ).then(res => {
                 dispatch(setUsers(res.data))
+                dispatch(setLoading(false))
+            }).catch(error => {
+                dispatch(setLoading(false))
+                if (error && error.response && error.response.status === 401) {
+                    dispatch(outUser())
+                }
+            })
+        } else {
+            dispatch(outUser())
+        }
+    }
+}
+export const getTableDonations = (instructions) => {
+    return dispatch => {
+        const token = getToken();
+        if (token) {
+            dispatch(setLoading(true))
+            const AuthStr = 'Bearer '.concat(token);
+            axios.post(baseUrl + 'donations',
+                instructions, {headers: {Authorization: AuthStr}}
+            ).then(res => {
+                dispatch(setDonations(res.data))
                 dispatch(setLoading(false))
             }).catch(error => {
                 dispatch(setLoading(false))

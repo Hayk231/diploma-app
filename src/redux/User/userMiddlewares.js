@@ -172,29 +172,29 @@ export const deleteReminder = (goalId) => {
     }
 }
 
-export const donationCreate = (goalId, amount) => {
-    return dispatch => {
-        const token = getToken();
-        if (token) {
-            const AuthStr = 'Bearer '.concat(token);
-            axios.post(baseUrl + 'donations/' + goalId,
-                '', {
-                    params: {amount: parseInt(amount)},
-                    headers: {Authorization: AuthStr}
-                }).then(() => {
-                dispatch(setDonationDone(true));
-                // dispatch(getNotifications());
-            }).catch(error => {
-                dispatch(setLoading(false))
-                if (error && error.response && error.response.status === 401) {
-                    dispatch(outUser())
-                }
-            })
-        } else {
-            dispatch(outUser())
-        }
-    }
-}
+// export const donationCreate = (goalId, amount) => {
+//     return dispatch => {
+//         const token = getToken();
+//         if (token) {
+//             const AuthStr = 'Bearer '.concat(token);
+//             axios.post(baseUrl + 'donations/' + goalId,
+//                 '', {
+//                     params: {amount: parseInt(amount)},
+//                     headers: {Authorization: AuthStr}
+//                 }).then(() => {
+//                 dispatch(setDonationDone(true));
+//                 // dispatch(getNotifications());
+//             }).catch(error => {
+//                 dispatch(setLoading(false))
+//                 if (error && error.response && error.response.status === 401) {
+//                     dispatch(outUser())
+//                 }
+//             })
+//         } else {
+//             dispatch(outUser())
+//         }
+//     }
+// }
 
 export const getNotifications = () => {
     return dispatch => {

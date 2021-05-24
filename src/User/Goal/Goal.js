@@ -16,6 +16,7 @@ import {deleteReminder, setReminder} from "../../redux/User/userMiddlewares";
 import defImage from '../images/default_image.jpg';
 import Loading from "../../Helpers/components/Loading/Loading";
 import moment from "moment";
+import ShareButtons from "../../Helpers/components/ShareButtons";
 
 const Goal = () => {
     const [reminderActive, setReminderActive] = useState(false);
@@ -75,6 +76,9 @@ const Goal = () => {
         setReminderActive(!reminderActive);
     }
 
+    const shareUrl = `https://fndrisr.herokuapp.com/goals/${goalData.organizationUserId}/${goalData.id}/view`;
+    const mediaUrl = goalData.thumbnailImageData ? goalData.thumbnailImageData.url : '';
+
     if (!goalData.id) {
         return <Loading/>
     }
@@ -120,10 +124,13 @@ const Goal = () => {
                                       customPadding='10px 20px' icon={NotificationsActiveIcon}>
                             Subscribe
                         </CustomButton>
-                        <CustomButton radius='4px' style='light' customWidth='160px'
-                                      customPadding='10px 20px' icon={ShareOutlinedIcon}>
-                            Share
-                        </CustomButton>
+                    </div>
+                    <div className='goal_expanded_share'>
+                        <div>
+                            <ShareOutlinedIcon/>
+                            Share Goal:
+                        </div>
+                        <ShareButtons shareUrl={shareUrl} mediaUrl={mediaUrl}/>
                     </div>
                 </div>
             </div>

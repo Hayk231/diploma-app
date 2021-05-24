@@ -75,7 +75,7 @@ const Donate = () => {
             }).render(paypalButtonRef.current);
         }
     }, [goalData])
-
+    console.log(goalData)
     const changeFunction = (event) => {
         event.preventDefault();
         let changedData = {...paymentData};
@@ -104,7 +104,7 @@ const Donate = () => {
             <div className='donate_content'>
                 {
                     donationDone
-                        ? <DonateSuccess/>
+                        ? <DonateSuccess goalData={goalData}/>
                         : (
                             <>
                                 <img src={goalData.thumbnailImageData ? goalData.thumbnailImageData.url : defImage}

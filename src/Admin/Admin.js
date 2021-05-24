@@ -7,6 +7,7 @@ import AdminHeader from "./AdminHeader/AdminHeader";
 const Overview = lazy(() => import("./Overview/Overview"));
 const GoalList = lazy(() => import("./Goals/GoalList"));
 const UserList = lazy(() => import("./Users/UserList"));
+const DonationList = lazy(() => import("./Donations/DonationList"));
 
 const Admin = () => {
 
@@ -28,6 +29,7 @@ const Admin = () => {
                 <Route exact path='/admin/overview' component={Overview}/>
                 <Route exact path='/admin/goals' component={GoalList}/>
                 <Route exact path='/admin/users' component={UserList}/>
+                <Route exact path='/admin/donations' component={DonationList}/>
             </Switch>
         </div>
     );

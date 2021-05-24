@@ -21,7 +21,7 @@ import {useSelector} from "react-redux";
 import Loading from "../Loading/Loading";
 
 function EnhancedTableHead(props) {
-    const {classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headCells} = props;
+    const {classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headCells, disableSelect} = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -29,14 +29,18 @@ function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
-                <TableCell padding="checkbox">
-                    <Checkbox
-                        indeterminate={numSelected > 0 && numSelected < rowCount}
-                        checked={rowCount > 0 && numSelected === rowCount}
-                        onChange={onSelectAllClick}
-                        inputProps={{'aria-label': 'select all desserts'}}
-                    />
-                </TableCell>
+                {
+                    !disableSelect && (
+                        <TableCell padding="checkbox">
+                            <Checkbox
+                                indeterminate={numSelected > 0 && numSelected < rowCount}
+                                checked={rowCount > 0 && numSelected === rowCount}
+                                onChange={onSelectAllClick}
+                                inputProps={{'aria-label': 'select all desserts'}}
+                            />
+                        </TableCell>
+                    )
+                }
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
@@ -176,7 +180,7 @@ export default function EnhancedTable(
     {
         rows, headCells, hideId, selectedActionContent,
         selectedAction, tableTitle, filter, defOrder,
-        setFilter, filters, getData, extra
+        setFilter, filters, getData, extra, disableSelect
     }) {
     const classes = useStyles();
     const {averageCount, changeTrigger} = useSelector(state => state.admin);
@@ -268,28 +272,37 @@ export default function EnhancedTable(
                             onRequestSort={handleRequestSort}
                             rowCount={rows.length}
                             headCells={headCells}
+                            disableSelect={disableSelect}
                         />
                         <TableBody>
                             {rows.map((row, index) => {
-                                const isItemSelected = isSelected(row.id);
+                                const isItemSelected = disableSelect ? false : isSelected(row.id);
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
                                 return (
                                     <TableRow
                                         hover
-                                        onClick={(event) => handleClick(event, row.id)}
+                                        onClick={(event) => {
+                                            if (!disableSelect) {
+                                                handleClick(event, row.id)
+                                            }
+                                        }}
                                         role="checkbox"
                                         aria-checked={isItemSelected}
                                         tabIndex={-1}
                                         key={row.id}
                                         selected={isItemSelected}
                                     >
-                                        <TableCell padding="checkbox">
-                                            <Checkbox
-                                                checked={isItemSelected}
-                                                inputProps={{'aria-labelledby': labelId}}
-                                            />
-                                        </TableCell>
+                                        {
+                                            !disableSelect && (
+                                                <TableCell padding="checkbox">
+                                                    <Checkbox
+                                                        checked={isItemSelected}
+                                                        inputProps={{'aria-labelledby': labelId}}
+                                                    />
+                                                </TableCell>
+                                            )
+                                        }
                                         {
                                             Object.keys(row).map(key => {
                                                 if (hideId && key !== 'id') {

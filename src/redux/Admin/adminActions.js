@@ -28,6 +28,10 @@ export const adminActions = createSlice({
             state.users = action.payload.items;
             state.averageCount = action.payload.count;
         },
+        setDonations: (state, action) => {
+            state.donations = action.payload.items;
+            state.averageCount = action.payload.count;
+        },
         triggerChange: state => {
             state.changeTrigger = !state.changeTrigger
         },
@@ -44,6 +48,7 @@ export const adminActions = createSlice({
 export const {
     setGoals,
     setUsers,
+    setDonations,
     triggerChange,
     outUser
 } = adminActions.actions

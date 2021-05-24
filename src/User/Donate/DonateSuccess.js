@@ -1,16 +1,17 @@
 import React from 'react';
-import ShareOutlinedIcon from "@material-ui/icons/ShareOutlined";
-import CustomButton from "../../Helpers/components/CustomButton";
+import ShareButtons from "../../Helpers/components/ShareButtons";
 
-const DonateSuccess = () => {
+const DonateSuccess = ({goalData}) => {
+
+    const shareUrl = `https://fndrisr.herokuapp.com/goals/${goalData.organizationUserId}/${goalData.id}/view`;
+    const mediaUrl = goalData.thumbnailImageData ? goalData.thumbnailImageData.url : '';
+
     return (
         <>
             <h1>ALL DONE !</h1>
             <h2>Thank you for your donation</h2>
-            <div className='donate_success_share'>You can share your donation with friends</div>
-            <CustomButton radius='4px' style='light' customPadding='8px 30px' icon={ShareOutlinedIcon}>
-                Share
-            </CustomButton>
+            <div className='donate_success_share_text'>You can share your donation with friends</div>
+            <ShareButtons shareUrl={shareUrl} mediaUrl={mediaUrl}/>
         </>
     );
 };
